@@ -1,9 +1,10 @@
 # TAnalyse d’accessibilité multimodale [<img src="https://rzine.fr/img/Rzine_logo.png"  align="right" width="120"/>](http://rzine.fr/)
 ### Avec R et OpenTripPlanner
-**Auteur.e.s (affiliation.s)**
+**Marion Le Texier (LAGAM, Université Paul Valéry Montpellier 3)**
+**Jean-Clément Ullès (LAGAM, Université Paul Valéry Montpellier 3)**
 <br/>  
 
-Résumé de la fiche....
+Cette fiche présente une méthodologie d’analyse de l’accessibilité multimodale d’un territoire à partir des données GTFS et du logiciel OpenTripPlanner. Nous détaillerons la manière dont ce nouvel outil ouvre de nouvelles perspectives d’analyse de l’accessibilité en lien avec les nouvelles données de mobilité.
 
 
 Pour la consulter, cliquez [**ici**](https://rzine.fr/docs/........./index.html)
