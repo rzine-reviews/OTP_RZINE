@@ -1,4 +1,4 @@
-# TAnalyse d’accessibilité multimodale [<img src="https://rzine.fr/img/Rzine_logo.png"  align="right" width="120"/>](http://rzine.fr/)
+# Analyse d’accessibilité multimodale [<img src="https://rzine.fr/img/Rzine_logo.png"  align="right" width="120"/>](http://rzine.fr/)
 ### Avec R et OpenTripPlanner
 **Marion Le Texier (LAGAM, Université Paul Valéry Montpellier 3)**
 **Jean-Clément Ullès (LAGAM, Université Paul Valéry Montpellier 3)**
