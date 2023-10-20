@@ -1,5 +1,5 @@
-# Titre fiche [<img src="https://rzine.fr/img/Rzine_logo.png"  align="right" width="120"/>](http://rzine.fr/)
-### Sous-titre fiche
+# TAnalyse d’accessibilité multimodale [<img src="https://rzine.fr/img/Rzine_logo.png"  align="right" width="120"/>](http://rzine.fr/)
+### Avec R et OpenTripPlanner
 **Auteur.e.s (affiliation.s)**
 <br/>  
 
