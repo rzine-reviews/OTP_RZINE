@@ -456,7 +456,10 @@ route$walkDistance/route$duration
 
 # Création d'itinéraires
 
-Les recherches d'itinéraires constituent un premier levier d'analyse de l'accessibilité d'un lieu ou d'un ensemble de lieux depuis un ou plusieurs points de départ. 
+Les recherches d'itinéraires constituent un premier levier d'analyse de l'accessibilité d'un lieu ou d'un ensemble de lieux depuis un ou plusieurs points de départ.
+
+<div class="alert alert-danger" role="alert">
+<b>Point de vigilance pour les requêtes concernant les horaires de l'après-midi.</b> En fonction des paramètres de votre R, il se peut que les horaires de l'après-midi se convertissent automatiquement le matin. Par exemple `date_time = as.POSIXct("2023-04-19 14:15:00")` pourrait requêter à 2h15 du matin au lieu de 14h15 l'après-midi. Si c'est votre cas, vous devez spécifier à chaque nouvelle session R `Sys.setlocale("LC_TIME","en_US.UTF-8")` dans la console. La résolution du problème a été découverte [ici](https://github.com/ropensci/opentripplanner/issues/85).</div>
 
 ## Requête unique
 
