@@ -9,7 +9,7 @@ Cette fiche présente une méthodologie d’analyse de l’accessibilité multim
 Le répertoire OTP, contenant le logiciel Java et les données nécessaires aux calculs d'accessibilité, est disponible [ici](https://zenodo.org/records/10027161).
 
 
-Pour la consulter, cliquez [ici](https://rzine.fr/docs/........./index.html).
+Pour la consulter, cliquez [ici]([https://rzine.fr/docs/........./index.html](https://rzine-reviews.github.io/OTP_RZINE/).
 
 <br/>  
 
