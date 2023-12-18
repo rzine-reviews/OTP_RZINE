@@ -30,19 +30,19 @@ link-citations: true
 ```{r setup, include=FALSE}
 
 ## Global options
-knitr::opts_chunk$set(echo=TRUE,
-        	            cache=FALSE,
-                      prompt=FALSE,
-                      comment=NA,
-                      message=FALSE,
-                      warning=FALSE,
-                      class.source="bg-info",
-                      class.output="bg-warning")
+knitr::opts_chunk$set(echo = TRUE,
+        	            cache = FALSE,
+                      prompt = FALSE,
+                      comment = NA,
+                      message = FALSE,
+                      warning = FALSE,
+                      class.source = "bg-info",
+                      class.output = "bg-warning")
 
 
 ```
 
-> Cette fiche présente une méthodologie d'analyse de l'accessibilité multimodale d'un territoire à partir des données GTFS et du logiciel OpenTripPlanner. Nous détaillerons la manière dont ce nouvel outil ouvre de nouvelles perspectives d'analyse de l'accessibilité en lien avec les nouvelles données de mobilité.
+> Cette fiche présente une méthodologie d'analyse de l'accessibilité multimodale d'un territoire à partir des données GTFS et du logiciel OpenTripPlanner. Nous détaillerons la manière dont cet outil ouvre de nouvelles perspectives d'analyse de l'accessibilité en lien avec les nouvelles données de mobilité.
 
 # Introduction
 
@@ -54,7 +54,7 @@ Celui-ci a été construit dans le but d'accompagner son apprentissage via l'usa
 
 L'accessibilité est un concept utilisé en géographie pour qualifier "la plus ou moins grande facilité avec laquelle ce lieu peut être atteint à partir d'un ou de plusieurs autres lieux, par un ou plusieurs individus susceptibles de se déplacer à l'aide de tout ou partie des moyens de transport existants" (Laurent Chapelon in [Encyclopédie Hypergeo](https://hypergeo.eu/accessibilite/)).
 
-Etudier l'accessibilité multimodale d'un lieu ou d'un ensemble de lieux revient donc à mesurer puis à comparer les possibilités de déplacement et la pénabilité associée à ces trajets en tenant compte de l'ensemble des modes de transport disponibles : transports en commun, à pieds, à vélo, ou en voiture, notamment.
+Étudier l'accessibilité multimodale d'un lieu ou d'un ensemble de lieux revient donc à mesurer puis à comparer les possibilités de déplacement et la pénabilité associée à ces trajets en tenant compte de l'ensemble des modes de transport disponibles : transports en commun, à pieds, à vélo, ou en voiture, notamment.
 
 ## Le projet OpenTripPlanner
 
@@ -62,7 +62,7 @@ Etudier l'accessibilité multimodale d'un lieu ou d'un ensemble de lieux revient
 
 L'analyse de l'accessibilité par des réseaux de transport multimodaux, opérant à différentes échelles et gérés par des autorités organisatrices variées, marque une étape importante dans le champ de la géographie des transports. Les déplacements optimaux déterminés par OTP correspondent au plus court chemin, c'est-à-dire à la minimisation du temps de déplacement pour l'usager (algorithmes de Dijkstra (@Dijkstra), A\* (@Hart1968) et assimilés). L'intermodalité au sein d'un même réseau (intramodalité) ou entre des réseaux différents est également intégrée dans OTP, avec la gestion optimale des correspondances (minimisation du temps de marche entre deux arrêts, du temps d'attente aux arrêts, etc.). OTP se prête donc aux analyses territoriales de l'accessibilité, en simulant les meilleurs déplacements possibles pour l'usager en fonction des différents modes de transport qu'il a à sa disposition pour un horaire donné.
 
-Briévement, OTP construit un graphe décrivant les itinéraires reliant l'ensemble des localisations d'un territoire donné, en transport en commun comme par la route, à partir de données *General Transit Feed Specification (GTFS)* pour le réseau de transport en commun (bus, métros, tramways, trains) et de données *OpenStreetMap* pour les modes de déplacement routiers (voiture, vélo, piéton). Le logiciel dépend donc de données ouvertes renseignées dans des formats de fichiers standards. Sur ce point, rappelons que les autorités organisatrices de la mobilité (AOM) ont l'obligation de transmettre leurs données de l'offre de transport (règlement européen 2017/1926, art. 25 de la LOM de 2019) sur le point d'accès national [(PAN)](https://transport.data.gouv.fr/).
+Brièvement, OTP construit un graphe décrivant les itinéraires reliant l'ensemble des localisations d'un territoire donné, en transport en commun comme par la route, à partir de données *General Transit Feed Specification (GTFS)* pour le réseau de transport en commun (bus, métros, tramways, trains) et de données *OpenStreetMap* pour les modes de déplacement routiers (voiture, vélo, piéton). Le logiciel dépend donc de données ouvertes renseignées dans des formats de fichiers standards. Sur ce point, rappelons que les autorités organisatrices de la mobilité (AOM) ont l'obligation de transmettre leurs données de l'offre de transport (règlement européen 2017/1926, art. 25 de la LOM de 2019) sur le point d'accès national [(PAN)](https://transport.data.gouv.fr/).
 
 Le [code source d'OTP](https://github.com/opentripplanner/OpenTripPlanner) est publié en accès libre sur la plateforme Github.
 
@@ -119,7 +119,7 @@ Le dossier contient différents fichiers au format texte, renseignant chacun une
 
 De nombreuses dépendances existent donc entre les différents fichiers constituant la base de données GTFS, et ces fichiers peuvent être plus ou moins nombreux comme l'illustre le diagramme de classe proposé sur la [page Wikipédia associée](https://fr.wikipedia.org/wiki/General_Transit_Feed_Specification) et reproduite ci-dessous.
 
-```{r, echo=FALSE, out.width="50%",  fig.align = 'center'}
+```{r, echo=FALSE, out.width="50%", fig.align = 'center'}
 knitr::include_graphics("figures/gtfs_wiki.png")
 ```
 
@@ -133,13 +133,13 @@ La complétude et la précision des données varient d'un territoire, d'une éch
 
 La société allemande [**Geofabrik GmbH**](https://www.geofabrik.de/) propose au téléchargement des instantanés de la base de données OSM pour un espace géographique donné. L'échelle géographique la plus fine correspond aux anciennes régions françaises. Les données décrivant la métropole de Montpellier Méditerranée sont donc contenues dans le paquet décrivant le Languedoc-Roussillon.
 
-La librairie `osmextract` permet de télécharger et d'importer facilement des données *OpenStreetMap* de Geofabrik et d'autres fournisseurs depuis R.
+La bibliothèque `osmextract` permet de télécharger et d'importer facilement des données *OpenStreetMap* de Geofabrik et d'autres fournisseurs depuis R.
 
 ```{r, eval=FALSE}
 library(osmextract)
 ```
 
-Nous allons utiliser le fichier décrivant les limites de la métropole de Montpellier 3M afin de créer un filtre spatial lors du téléchargement des données OSM depuis la Geofabrik. Pour cela, nous l'importons dans le projet en cours via la fonction `st_read()` de la librairie `sf`.
+Nous allons utiliser le fichier décrivant les limites de la métropole de Montpellier 3M afin de créer un filtre spatial lors du téléchargement des données OSM depuis la Geofabrik. Pour cela, nous l'importons dans le projet en cours via la fonction `st_read()` de la bibliothèque `sf`.
 
 Le fichier GeoJSON des communes de la métropole de Montpellier est disponible ici :
 
@@ -151,15 +151,15 @@ library(sf)
 EPCI_3M <- st_read("data/EPCI_MONTPELLIER.geojson")
 ```
 
-La fonction `oe_match()` de la librairie `osmextract` permet d'associer par le biais d'une relation d'appartenance géographique un lieu d'entrée avec l'URL du fichier .osm.pbf correspondant, qu'elle enregistre dans une liste.
+La fonction `oe_match()` de la bibliothèque `osmextract` permet d'associer par le biais d'une relation d'appartenance géographique un lieu d'entrée avec l'URL du fichier .osm.pbf correspondant, qu'elle enregistre dans une liste.
 
-```{r, eval=FALSE}
+```{r, eval = FALSE}
 OSM_3M_url <- oe_match(EPCI_3M) 
 ```
 
-On peut alors télécharger le fichier par la biais de la fonction `oe_download()` de la librairie, en indiquant l'url du fichier, sa taille et le chemin d'accès du répertoire dans lequel on souhaite consigner le fichier (par exemple, le dossier temporaire).
+On peut alors télécharger le fichier par la biais de la fonction `oe_download()` de la bibliothèque, en indiquant l'url du fichier, sa taille et le chemin d'accès du répertoire dans lequel on souhaite consigner le fichier (par exemple, le dossier temporaire).
 
-```{r, eval=FALSE}
+```{r, eval = FALSE}
 oe_download(
 file_url = OSM_3M_url$url,
 file_size = OSM_3M_url$file_size,
@@ -172,13 +172,13 @@ download_directory = tempdir()
 
 Le format des données ainsi téléchargées (*Protocolbuffer Binary Format*) est spécifique au projet *OpenStreetMap*, mais utilise le format de sérialisation de Google pour produire un fichier au format binaire. Il permet de regrouper des informations multiples (entités, objets, tuiles) de façon indépendante.
 
-Par curiosité (mais cela n'est pas une étape nécessaire pour la mise en oeuvre de la chaîne de traitements), on peut importer les couches d'information géographique souhaitées une à une ou de façon groupée via la fonction `st_read()`, en spécifiant la couche (organisée par type de géométrie) et en créant une requête sur les attributs, par exemple en sélectionnant les routes (*key=highway*) dans la couche.
+Par curiosité (mais cela n'est pas une étape nécessaire pour la mise en oeuvre de la chaîne de traitements), on peut importer les couches d'information géographique souhaitées une à une ou de façon groupée via la fonction `st_read()`, en spécifiant la couche (organisée par type de géométrie) et en créant une requête sur les attributs, par exemple en sélectionnant les routes (*key = highway*) dans la couche.
 
-```{r, eval=FALSE}
+```{r, eval = FALSE}
 OSM_highways <- sf::read_sf("C:\\Users\\33658\\AppData\\Local\\Temp\\RtmpCYFlTP\\geofabrik_languedoc-roussillon-latest.osm.pbf", layer = "lines", query = "select highway from lines")
 ```
 
-## Relations entre données GTFS et OSM.PBF
+## Relations entre données GTFS et données OpenStreetMap
 
 Si un arrêt d’un GTFS se trouve dans un bâtiment, il est nécessaire d’être vigilant à sa connexion au graphe piéton, sans quoi l’isolement de l’arrêt rendra impossible les parcours à pied puisque l'impossible de créer des pré- et post-acheminements en dehors du bâtiment ne permettront pas l'identification de correspondances.
 
@@ -186,17 +186,20 @@ Par exemple, les cheminements piétons dans les gares ne sont pas systématiquem
 
 Il nous semble que deux solutions peuvent alors être envisagées :
 
-- Contribuer à OpenStreetMap pour ajouter les informations manquantes. Les données .osm.pbf de la Geofabrik sont mises à jour tous les jours ;
+- Contribuer à OpenStreetMap pour ajouter les informations manquantes. Les données .osm.pbf, parmi d'autres formats disponibles, de la Geofabrik sont mises à jour tous les jours ;
 
 - Modifier la localisation du point d’arrêt créé par le GTFS. Cela peut être intéressant pour déplacer un arrêt avec des coordonnées imprécises. Ainsi, le point peut être replacé dans un espace accessible au graphe piéton, comme l’entrée de la gare. Les coordonnées des arrêts sont rangées dans le fichier *stops*.
 
 # Préparation de l'environnement R pour OTP
 
-## La librairie `opentripplanner`
+## La bibliothèque `opentripplanner`
 
-OTP étant défini en Java, son fonctionnement nécessite l'entrée de lignes de commandes Java. La librairie `opentripplaner` permet de définir les paramètres de ces fonctions depuis R et de les traduire automatiquement en Java.
+OTP étant défini en Java, son fonctionnement nécessite l'entrée de lignes de commandes Java. La bibliothèque `opentripplaner` permet de définir les paramètres de ces fonctions depuis R et de les traduire automatiquement en Java.
 
-La version de la librairie utilisée pour ce tutoriel est la 0.5.0, publiée en janvier 2023 et téléchargée depuis le CRAN le 27 mars 2023. Son exécution nécessitera l'installation préalable de [Java 8](https://www.java.com/fr/download/) sur la machine. Attention, des conflits avec des versions postérieures ou ultérieures de Java sur votre machine sont à attendre, il est donc recommandé de désinstaller ces versions en amont de l'installation de Java 8 et du lancement d'OTP.
+La version de la bibliothèque utilisée pour ce tutoriel est la 0.5.0, publiée en janvier 2023 et téléchargée depuis le CRAN le 27 mars 2023. Son exécution nécessitera l'installation préalable de [Java 8](https://www.java.com/fr/download/) sur la machine. Attention, des conflits avec des versions postérieures ou ultérieures de Java sur votre machine sont à attendre, il est donc recommandé de désinstaller ces versions en amont de l'installation de Java 8 et du lancement d'OTP.
+
+<div class="alert alert-danger" role="alert">
+Si la désinstallation d'une version postérieure ou ultérieure à Java 8 représente un problème, il existe des solutions pour faire cohabiter plusieurs versions de Java en fonction de votre système d'exploitation : [Linux Ubuntu](https://www.baeldung.com/linux/java-choose-default-version), [Windows](https://www.happycoders.eu/java/how-to-switch-multiple-java-versions-windows/) et [MacOS X](https://notiz.dev/blog/how-to-manage-multiple-java-versions-on-mac).</div>
 
 ```{r}
 library(opentripplanner)
@@ -206,7 +209,7 @@ Cette partie du tutoriel est basée sur la [documentation proposée par Marcus Y
 
 ## Installation d'OTP
 
-Nous allons donc utiliser OTP en local, en téléchargeant la dernière version du logiciel depuis R.
+Nous allons donc utiliser OTP en local, en téléchargeant la version 1.5 du logiciel depuis R (il s'agit de la version compatible du *package*, d'autres versions plus récentes ont vu le jour depuis).
 
 ### Création du répertoire
 
@@ -220,9 +223,9 @@ path_data <- file.path("data/OTP")
 
 ### Pré-construction du fichier JAR
 
-La fonction `otp_dl_jar()` de la librairie `opentripplanner` télécharge le fichier JAR (*Java Archive*) d'OTP. Par défaut, le fichier JAR est caché dans un sous-repértoire de la librairie. Si l'on souhaite spécifier la localisation du fichier JAR, il faut en indiquer le chemin d'accès (`path=`) et spécifier que l'on ne souhaite pas utiliser la cache par défaut (`cache=FALSE`).
+La fonction `otp_dl_jar()` de la bibliothèque `opentripplanner` télécharge le fichier JAR (*Java Archive*) d'OTP. Par défaut, le fichier JAR est caché dans un sous-repértoire de la bibliothèque. Si l'on souhaite spécifier la localisation du fichier JAR, il faut en indiquer le chemin d'accès (`path =`) et spécifier que l'on ne souhaite pas utiliser la cache par défaut (`cache = FALSE`).
 
-```{r, eval=FALSE}
+```{r, eval = FALSE}
 download_otp <- otp_dl_jar(path = path_data, cache = FALSE)
 ```
 
@@ -233,7 +236,7 @@ Si le téléchargement du fichier via R ne fonctionne pas, vous pouvez télécha
 On indique ensuite dans un vecteur au format "caractères" le chemin d'accès complet vers l'archive d'OTP :
 
 ```{r}
-path_otp <- paste(path_data,"/otp-1.5.0-shaded.jar", sep="")
+path_otp <- paste(path_data,"/otp-1.5.0-shaded.jar", sep = "")
 ```
 
 ## Préparation des fichiers d'entrée
@@ -254,13 +257,13 @@ Le paramètre `otp` indique le chemin d'accès vers l'archive java d'OTP (fichie
 
 Le paramètre `dir` indique le chemin d'accès vers le répertoire contenant les fichiers nécessaires à la génération du graphe.
 
-Le paramètre `memory` prend un nombre entier qui renseigne sur la quantité de mémoire à attribuer à OTP (par défaut 2048 MB). La quantité de mémoire dépend de la taille de l'espace géographique à l'étude, de la puissance de votre machine et de la version de Java utilisée (idéalement du 64bit, vous serez limités à quelques GB si vous utilisez le 32bit).
+Le paramètre `memory` prend un nombre entier qui renseigne sur la quantité de mémoire à attribuer à OTP (par défaut 2048 Mo). La quantité de mémoire dépend de la taille de l'espace géographique à l'étude, de la puissance de votre machine et de la version de Java utilisée (idéalement du 64 bits, vous serez limités à quelques Go si vous utilisez le 32 bits).
 
-Le territoire métropolitain de Montpellier correspond à un espace géographique de taille intermédiaire, nous allons donc demander à utiliser 10GB de mémoire (c'est-à-dire 10000MB).
+Le territoire métropolitain de Montpellier correspond à un espace géographique de taille intermédiaire, nous allons donc demander à utiliser 10 Go de mémoire (c'est-à-dire 10000 Mo).
 
 Notons ici qu'OTP est optimisé pour réaliser des routages à l'échelle d'une ville et que ses performances se dégraderont avec de plus grandes zones.
 
-```{r, eval=FALSE}
+```{r, eval = FALSE}
 otp_build_graph(otp = path_otp, dir = path_data, memory = 10000)
 ```
 
@@ -269,7 +272,7 @@ Une fois le graphe construit, il est recommandé de passer la ligne en commentai
 ## Synthèse de l'organisation du dossier OTP
 
 Nous pouvons résumer l'organisation du dossier OTP avec ce schéma :
-```{r, echo=FALSE, out.width="50%",  fig.align = 'center'}
+```{r, echo = FALSE, out.width = "50%",  fig.align = 'center'}
 knitr::include_graphics("figures/schema_OTP.png")
 ```
 
@@ -292,9 +295,9 @@ OTP dispose d'un [serveur Web Grizzly](https://javaee.github.io/grizzly/) intég
 otp_setup(otp = path_otp, dir = path_data)
 ```
 
-La session d'OTP est alors démarrée en local, et une fenêtre s'ouvre dans un navigateur internet afin d'accéder à l'interface graphique du logiciel.
+La session d'OTP est alors démarrée en local, et une fenêtre s'ouvre dans un navigateur Web afin d'accéder à l'interface graphique du logiciel.
 
-```{r, echo=FALSE, out.width="100%",  fig.align = 'center'}
+```{r, echo = FALSE, out.width = "100%",  fig.align = 'center'}
 knitr::include_graphics("figures/localOTP.png")
 ```
 
@@ -306,14 +309,14 @@ Pour rechercher un itinéraire depuis OTP, il est possible de désigner les lieu
 
 Pour définir un point de départ, sans en connaître les coordonnées de longitude/latitude ou le nom d'arrêt au préalable, il est possible de le sélectionner directement depuis la fenêtre graphique comme suit :
 
-```{r, echo=FALSE, out.width="100%",  fig.align = 'center'}
+```{r, echo = FALSE, out.width = "100%",  fig.align = 'center'}
 knitr::include_graphics("figures/VertBoisOTP2.png")
 ```
 
 <div class="alert alert-success" role="alert">
 Nous allons dans un premier temps rechercher les itinéraires possibles en transport en commun entre les arrêts de transport en commun Vert-Bois et Port-Marianne, respectant des distances à pieds maximales de 1000m et étant disponibles au moment de la requête (**ex : le 30 mars 2023, à 15h08**).</div>
 
-```{r, echo=FALSE, out.width="100%",  fig.align = 'center'}
+```{r, echo = FALSE, out.width = "100%",  fig.align = 'center'}
 knitr::include_graphics("figures/Itineraire1.png")
 ```
 
@@ -324,21 +327,21 @@ D'autres paramétrages sont directement accessibles depuis l'interface, comme l'
 <div class="alert alert-success" role="alert">
 Nous paramétrons les cheminements piétons en renseignant une distance maximale de marche de 100m.</div>
 
-```{r, echo=FALSE, out.width="50%",  fig.align = 'center'}
+```{r, echo = FALSE, out.width = "50%",  fig.align = 'center'}
 knitr::include_graphics("figures/notravelfound.png")
 ```
 
 <div class="alert alert-success" role="alert">
 Nous pouvons également paramétrer les profils d'itinéraires cyclables (selon des critères de rapidité du trajet, d'adaptabilité au vélo et d'élévation du terrain), par exemple pour se rendre de la place de la Comédie à la plage du Prevost.</div>
 
-```{r, echo=FALSE, out.width="100%",  fig.align = 'center'}
+```{r, echo = FALSE, out.width = "100%",  fig.align = 'center'}
 knitr::include_graphics("figures/Itineraire2.png")
 ```
 
 <div class="alert alert-success" role="alert">
 On peut aisément calculer l'impact du choix d'un itinéraire 100% adapté au vélo sur la durée de ce trajet.</div>
 
-```{r, echo=FALSE, out.width="100%",  fig.align = 'center'}
+```{r, echo = FALSE, out.width = "100%",  fig.align = 'center'}
 knitr::include_graphics("figures/Itineraire3.png")
 ```
 
@@ -349,7 +352,7 @@ Afin d'automatiser les procédures, il est intéressant d'exécuter OTP depuis R
 La fonction `otp_connect()` permet de tester et de créer une connexion à OTP depuis R. Plusieurs paramètres peuvent lui être passés en option, tel que le fuseau horaire (*timezone*) à partir duquel construire les requêtes (par défaut, la valeur est celle de votre machine), la version d'OTP (par défaut, la version renseignée est 1.5), ou encore le port utilisé pour la connexion (par défaut, le numéro de port utilisé est 8080).
 
 ```{r}
-myOtpcon <- otp_connect(timezone = "Europe/Paris")
+my_otpcon <- otp_connect(timezone = "Europe/Paris")
 ```
 
 ## Arrêter l'instance locale d'OTP
@@ -358,7 +361,7 @@ Le lancement d'OTP a automatiquement démarré Java, qui s'exécute donc hors de
 
 Un message s'affiche, afin de valider la clotûre de Java induite par la commande `otp_stop()` : "*This will force Java to close, Press [enter] to continue, [escape] to abort*". Notons ici qu'en pressant sur `[enter]`, toutes les applications utilisant Java seront arrêtées.
 
-```{r, eval=FALSE}
+```{r, eval = FALSE}
 otp_stop()
 ```
 
@@ -370,13 +373,13 @@ OTP permet de [configurer les options de déplacement à prendre en compte lors 
 
 -   `build-config.json` renseigne les éléments indispensables à la génération du graphe, par exemple en spécifiant les fichiers GTFS sources pour différents systèmes de transports en commun fonctionnant sur le territoire ou en indiquant que l'on souhaite que les transferts entre arrêts d'une même station de transport (par exemple, de métro) soient privilégiés :
 
-```{r, echo=FALSE, out.width="50%",  fig.align = 'center'}
+```{r, echo = FALSE, out.width = "50%",  fig.align = 'center'}
 knitr::include_graphics("figures/build_config1.png")
 ```
 
 -   `router-config.json` contient des options de configuration d'exécution mobilisées lors du *setup* (i.e. `otp_setup()`) qui peuvent donc être modifiées une fois le graphe construit. On peut par exemple  spécifier les durées maximales de recherche d'un itinéraire et de ses alternatives avec l'option `timeouts` ou modifier le sens de circulation par défaut sur le réseau routier par l'option `driveOnRight: false` :
 
-```{r, echo=FALSE, out.width="50%",  fig.align = 'center'}
+```{r, echo = FALSE, out.width = "50%",  fig.align = 'center'}
 knitr::include_graphics("figures/router_config1.png")
 ```
 
@@ -386,7 +389,7 @@ De nombreux paramètres peuvent ainsi être ajoutés dans le fichier de configur
 
 ### Modifier les paramètres via des fonctions R
 
-La librairie `opentripplanner` propose plusieurs fonctionnalités afin de faciliter la configuration de l'instance OTP.
+La bibliothèque `opentripplanner` propose plusieurs fonctionnalités afin de faciliter la configuration de l'instance OTP.
 
 La fonction `otp_make_config()` crée un fichier de configuration, de type `router`, `build` ou `otp`.
 
@@ -434,18 +437,19 @@ otp_write_config(router_config,
 
 Les configurations du routeur sont prises en compte lors du lancement du serveur OTP et ne peuvent être mobilisées alors qu'une session est en cours. Nous allons donc nous déconnecter puis nous reconnecter à l'instance locale d'OTP pour pouvoir en tenir compte lors de nos analyses.
 
-```{r,eval=FALSE}
+```{r,eval = FALSE}
 otp_stop()
-otp_setup(otp = path_otp, dir = path_data, router="default")
-myOtpcon <- otp_connect(timezone = "Europe/Paris", router="default")
+
+otp_setup(otp = path_otp, dir = path_data, router = "default")
+
+my_otpcon <- otp_connect(timezone = "Europe/Paris", router = "default")
 ```
 
 <div class="alert alert-success" role="alert">
 Afin de vérifier la bonne prise en compte des paramètres de configuration, nous allons calculer la vitesse moyenne de l'itinéraire piéton séparant la place de la Comédie de la plage du Prevost.</div>
 
-```{r,eval=FALSE}
-
-route_bis <- otp_plan(otpcon=myOtpcon, 
+```{r,eval = FALSE}
+route_bis <- otp_plan(otpcon = my_otpcon, 
                   fromPlace = c(3.87943, 43.60844), 
                   toPlace = c(3.96915, 43.54009),
                   mode = "WALK",
@@ -459,7 +463,7 @@ route$walkDistance/route$duration
 Les recherches d'itinéraires constituent un premier levier d'analyse de l'accessibilité d'un lieu ou d'un ensemble de lieux depuis un ou plusieurs points de départ.
 
 <div class="alert alert-danger" role="alert">
-<b>Point de vigilance pour les requêtes concernant les horaires de l'après-midi.</b> En fonction des paramètres de votre R, il se peut que les horaires de l'après-midi se convertissent automatiquement le matin. Par exemple `date_time = as.POSIXct("2023-04-19 14:15:00")` pourrait requêter à 2h15 du matin au lieu de 14h15 l'après-midi. Si c'est votre cas, vous devez spécifier à chaque nouvelle session R `Sys.setlocale("LC_TIME","en_US.UTF-8")` dans la console. La résolution du problème a été découverte [ici](https://github.com/ropensci/opentripplanner/issues/85).</div>
+<b>Point de vigilance pour les requêtes concernant les horaires de l'après-midi.</b> En fonction des paramètres de votre logiciel R, il est possible que les horaires de l'après-midi se convertissent automatiquement comme le matin. Par exemple `date_time = as.POSIXct("2023-04-19 14:15:00")` pourrait requêter à 2h15 du matin au lieu de 14h15 l'après-midi. Si c'est le cas, vous devez spécifier à chaque nouvelle session R `Sys.setlocale("LC_TIME", "en_US.UTF-8")` dans la console. La résolution du problème a été découverte [ici](https://github.com/ropensci/opentripplanner/issues/85).</div>
 
 ## Requête unique
 
@@ -471,7 +475,7 @@ L'argument `otpcon` renseigne l'objet de connexion OTP produit avec la fonction 
 
 L'argument `mode` désigne les modes de transport à considérer pour le calcul de l'itinéraire : `TRANSIT` (déplacement en transport en commun, tous modes confondus), `BUS` (déplacement en bus), `TRAM` (déplacement en tramway), `RAIL` (déplacement en train), `WALK` (déplacement piéton), `BICYCLE` (déplacement à vélo), `CAR` (déplacement en voiture), etc. Par défaut, le trajet est calculé pour un voyage en voiture.
 
-Il est possible d'indiquer des combinaisons de modes de déplacement (parmi les [options proposées par OTP](https://docs.opentripplanner.org/en/v2.2.0/RoutingModes/)). Par exemple, une combinaison `c("CAR","TRANSIT")` permet de décrire des trajets de type *Kiss and ride*, où un usager est déposé en voiture à une station de transport en commun sans avoir lui-même à garer le véhicule automobile. La combinaison `c("CAR_PARK","TRANSIT")` permet quant-à-elle de décrire des trajets pour lesquels l'usager se déplace en voiture jusqu'à un parking relais à proximité d'un arrêt de transport en commun puis emprunte ce réseau.
+Il est possible d'indiquer des combinaisons de modes de déplacement (parmi les [options proposées par OTP](https://docs.opentripplanner.org/en/v2.2.0/RoutingModes/)). Par exemple, une combinaison `c("CAR", "TRANSIT")` permet de décrire des trajets de type *Kiss and ride*, où un usager est déposé en voiture à une station de transport en commun sans avoir lui-même à garer le véhicule automobile. La combinaison `c("CAR_PARK", "TRANSIT")` permet quant-à-elle de décrire des trajets pour lesquels l'usager se déplace en voiture jusqu'à un parking relais à proximité d'un arrêt de transport en commun puis emprunte ce réseau.
 
 Le paramètre `date_time` renseigne la date et l'heure de départ au format POSIXct. Par défaut, la date et le jour courants sont utilisés.
 
@@ -487,14 +491,14 @@ D'autres paramètres optionnels sont proposés, parmi lesquels :
 Le script ci-dessous permet de reproduire la dernière requête que nous avons renseignée depuis l'interface graphique d'OTP.</div>
 
 ```{r}
-route <- otp_plan(otpcon=myOtpcon, 
+route <- otp_plan(otpcon = my_otpcon, 
                   fromPlace = c(3.87943, 43.60844), 
                   toPlace = c(3.96915, 43.54009),
                   mode = "BICYCLE",
                   date_time = as.POSIXct("2023-04-19 10:15:00"))
 ```
 
-Le résultat de la requête est un tableau de données (`dataframe`) décrit au format *simple features* de la librairie du même nom (`sf`).
+Le résultat de la requête est un tableau de données (`dataframe`) décrit au format *simple features* de la bibliothèque du même nom (`sf`).
 
 ```{r}
 library(DT)
@@ -503,8 +507,9 @@ datatable(route)
 
 Le chemin proposé est composé de trois étapes (*legs*) de déplacement continu utilisant un même mode, recensés dans l'ordre du cheminement. La somme de leurs distances et de leurs durées correspond ainsi à la distance (en mètres) et à la durée (en secondes) du trajet total :
 
-```{r, eval=FALSE}
+```{r, eval = FALSE}
 sum(route$leg_distance)
+
 sum(route$leg_duration)
 ```
 
@@ -512,41 +517,43 @@ sum(route$leg_duration)
 
 L'intérêt d'instruire des requêtes OTP par lignes de commande est certainement de pouvoir générer des demandes multiples, par exemple, en étudiant les temps de trajet nécessaires pour se déplacer d'une origine à une destination à différents moments de la journée, en définissant une liste de lieux de départ pour un même lieu d'arrivée ou encore pour des plages horaires différenciées.
 
-Le format des paramètres `fromPlace` et `toPlace` peut être varié : couple de paires de longitude/latitude, matrice à deux colonnes décrivant les paires de longitude/latitude ou encore un fichier d'information géographique au format `sf` contenant des géométries ponctuelles décrites dans le CRS 4326.
+Le format des paramètres `fromPlace` et `toPlace` peut être varié : couple de paires de longitude/latitude, matrice à deux colonnes décrivant les paires de longitude/latitude ou encore un fichier d'information géographique au format `sf` contenant des géométries ponctuelles décrites dans le système de coordonnées 4326.
 
 ```{r}
-start_places <- as.matrix(rbind(c(3.86459,43.69760),c(4.01288,43.66112)))
+coord_origine <- as.matrix(rbind(c(3.86459, 43.69760), c(4.01288, 43.66112)))
 
-end_places <- c(3.89695,43.59880)
+coord_dest <- c(3.89695, 43.59880)
 
-route_2 <- otp_plan(otpcon=myOtpcon, 
-                  fromPlace = start_places, 
-                  toPlace = end_places,
-                  mode = c("TRANSIT","WALK"),
+route_2 <- otp_plan(otpcon = my_otpcon, 
+                  fromPlace = coord_origine, 
+                  toPlace = coord_dest,
+                  mode = c("TRANSIT", "WALK"),
                   date_time = as.POSIXct("2023-04-19 10:15:00"))
 
 ```
 
-La localisation des trajets peut aisément être obtenue et cartographiée. L'exemple ci-dessous utilise la fonction `annotation_map_tile()` de la librairie `ggspatial` afin d'ajouter un fond à la carte générée via la fonction `geom_sf()`de la librairie `ggplot2`. La carte proposée n'est pas mise en page, elle permet seulement de faire un rapide diagnostic visuel. La liste des fonds de carte disponibles est accessible via la fonction `rosm::osm.types()`.
+La localisation des trajets peut aisément être obtenue et cartographiée. L'exemple ci-dessous utilise la fonction `annotation_map_tile()` de la bibliothèque `ggspatial` afin d'ajouter un fond à la carte générée via la fonction `geom_sf()` de la bibliothèque `ggplot2`. Nous activerons également la bibliothèque `prettymapr` qui est reliée à `ggspatial` pour afficher cette fonction.  La carte proposée n'est pas mise en page, elle permet seulement de faire un rapide diagnostic visuel. La liste des fonds de carte disponibles est accessible via la fonction `rosm::osm.types()`.
 
-```{r, eval=FALSE}
+```{r, eval = FALSE}
 library(ggplot2)
 library(ggspatial)
+library(prettymapr)
+
 ggplot() +
   annotation_map_tile(zoom = 13) +
-  geom_sf(data = route_2, col = "red", size=1.5) +
-  annotate(geom="point", x = end_places[1], y = end_places[2], colour = "black", size = 2)
+  geom_sf(data = route_2, col = "red", size = 1.5) +
+  annotate(geom = "point", x = coord_dest[1], y = coord_dest[2], colour = "black", size = 2)
 ```
 
 L'usage de l'argument `get_geometry = FALSE` dans la fonction `otp_plan()` permet, à l'inverse, *d'abandonner* leur géométrie. Cette action permet notamment de gagner en temps de calcul lorsque les lieux sur lesquels opérer les requêtes sont nombreux et que l'on s'intéresse aux attributs des trajets.
 
 ```{r}
-route_3 <- otp_plan(otpcon=myOtpcon, 
-                  fromPlace = start_places, 
-                  toPlace = end_places,
-                  mode = c("TRANSIT","WALK"),
+route_3 <- otp_plan(otpcon = my_otpcon, 
+                  fromPlace = coord_origine, 
+                  toPlace = coord_dest,
+                  mode = c("TRANSIT", "WALK"),
                   date_time = as.POSIXct("2023-04-19 10:15:00"),
-                  get_geometry=FALSE)
+                  get_geometry = FALSE)
 ```
 
 <div class="alert alert-success" role="alert">
@@ -554,11 +561,13 @@ On peut par exemple seulement souhaiter construire une matrice de temps de traje
 
 ```{r}
 library(dplyr)
+
 route_3b <- route_3 %>% 
-  distinct(fromPlace,route_option, .keep_all = TRUE) %>%
-  select(fromPlace,toPlace,duration) 
+  distinct(fromPlace, route_option, .keep_all = TRUE) %>%
+  select(fromPlace, toPlace, duration) 
 
 library(tidyr)
+
 time_matrix <- pivot_wider(data = route_3b, names_from = toPlace, values_from = duration) 
   
 ```
@@ -567,11 +576,12 @@ On peut également choisir de ne garder au sein de la matrice que la durée de t
 
 ```{r}
 route_3c <- route_3 %>% 
-  distinct(fromPlace,route_option, .keep_all = TRUE) %>%
-  select(fromPlace,toPlace,duration) %>%
+  distinct(fromPlace, route_option, .keep_all = TRUE) %>%
+  select(fromPlace, toPlace, duration) %>%
   group_by(fromPlace) %>% slice(which.min(duration))
 
-route_3c$fromPlace <- c("Ori_1","Ori_2")
+route_3c$fromPlace <- c("Ori_1", "Ori_2")
+
 route_3c$toPlace <- "Dest_1"
 
 time_matrix_2 <- pivot_wider(data = route_3c, names_from = toPlace, values_from = duration)
@@ -580,31 +590,33 @@ time_matrix_2 <- pivot_wider(data = route_3c, names_from = toPlace, values_from 
 Ces matrices peuvent par exemple être retranscrites graphiquement sous la forme de cercles proportionnels au temps de trajet entre les lieux.
 
 ```{r}
-# passage de la matrice au format long pour faciliter sa mise en page graphique via la fonction melt de la librairie reshape2
+# passage de la matrice au format long pour faciliter sa mise en page graphique via la fonction melt de la bibliothèque reshape2
 library(reshape2)
+
 tabCont_time_matrix_2 <- melt(time_matrix_2) 
 
-# construction d'un graphique en cercles proportionnels avec la librairie ggplot2
+# construction d'un graphique en cercles proportionnels avec la bibliothèque ggplot2
 library(ggplot2)
+
 ggplot(tabCont_time_matrix_2, aes(x = variable,
                   y = fromPlace)) +  
-  geom_point(aes(size = value), color="blue")  +
-  scale_size(range=c(2,4),   
-             breaks=c(4431,4981), 
-             labels=c("4431","4981"), 
+  geom_point(aes(size = value), color = "blue")  +
+  scale_size(range = c(2, 4),   
+             breaks = c(4431, 4981), 
+             labels = c("4431", "4981"), 
              name = "Temps (sec)",
-             guide="legend") +
-  labs(title="Durée estimée des trajets", 
-       x="Destination",
-       y="Origines") +
+             guide = "legend") +
+  labs(title = "Durée estimée des trajets", 
+       x = "Destination",
+       y = "Origines") +
   theme_minimal() 
 ```
 
 ## Cartes d'itinéraires interactives
 
-Le code ci-dessous présente un exemple de cartographie interactive réalisée avec la librairie `leaflet` pour R.
+Le code ci-dessous présente un exemple de cartographie interactive réalisée avec la bibliothèque `leaflet` pour R.
 
-Pour centrer la carte, nous allons utiliser les données géospatiales décrivant les contours de la métropole de Montpellier. Leaflet nécessitant une projection en Pseudo-Mercator, nous utilisons la fonction `st_transform()` de la librairie `sf` afin de transformer le SCR de la couche.
+Nous représenterons le déplacement calculé dans l'objet `route` de la partie 5.1. Pour centrer la carte, nous allons dans un premier temps utiliser les données géospatiales décrivant les contours de la métropole de Montpellier. Leaflet nécessitant une projection en Pseudo-Mercator, nous utilisons la fonction `st_transform()` de la librairie `sf` afin de transformer le SCR de la couche.
 
 Les fonctions `st_centroid()` et `st_coordinates()` de la librairie `sf` permettent respectivement de définir le centroïde du polygone et d'en récupérer les coordonnées au sein d'une matrice. Les longitudes sont données dans la première colonne et les latitudes dans la seconde.
 
@@ -612,12 +624,15 @@ Notons que le GeoJSON `EPCI_3M` a été téléchargé et chargé dans la partie 
 
 ```{r}
 EPCI_3M_4326 <- st_transform(EPCI_3M, 4326)
+
 cent3M <- st_centroid(EPCI_3M_4326)
+
 lat3M <- median(st_coordinates(cent3M)[,2])
+
 lon3M <- median(st_coordinates(cent3M)[,1])
 ```
 
-Nous faisons ensuite appel aux fonctionnalités de la librairie `leaflet` afin de construire la carte interactive de l'objet `route` que nous venons de créer :
+Nous faisons ensuite appel aux fonctionnalités de la bibliothèque `leaflet` afin de construire la carte interactive de l'objet `route` que nous venons de créer :
 
 -   `setView()` permet de définir la vue de départ, en indiquant son centre géographique par un couple de coordonnées et un niveau de zoom allant de 0 (monde) à 18 (rue) ;
 
@@ -627,14 +642,17 @@ Nous faisons ensuite appel aux fonctionnalités de la librairie `leaflet` afin d
 
 ```{r}
 library(leaflet)
+
 leafMap <- leaflet(data = route) %>%
   setView(lat = lat3M, lng = lon3M, zoom = 10) %>%
-  addPolylines(popup = ~paste("Durée : ", round(duration/60)," minute(s)"), color = "#e31a1c", weight = 2) %>%
+  addPolylines(popup = ~paste("Durée : ", round(duration/60)," minute(s)"), color = "#e31a1c", weight = 4) %>%
   addProviderTiles(providers$CartoDB.Positron)
+
 leafMap
 ```
 
-Nous pouvons également choisir de représenter les étapes du trajet par des couleurs différenciées selon le mode de déplacement. Dans un premier temps, nous associons une couleur (de la palette `Set1` proposée dans la librairie `RColorBrewer`) par mode :
+Nous pouvons également choisir de représenter les étapes du trajet par des couleurs différenciées selon le mode de déplacement. Dans un premier temps, nous associons une couleur (de la palette `Set1` proposée dans la bibliothèque `RColorBrewer`) par mode.
+Il est possible de visualiser plus en détail  la deuxième étape du déplacement en entrant des coordonnées géographiques définies dans le paramètre `setView` (`setView(lat = 43.608887, lng = 3.880381)`) et en augmentant le niveau de `zoom` (`zoom = 18`).
 
 ```{r}
 mycol <- colorFactor(
@@ -643,22 +661,25 @@ mycol <- colorFactor(
 )
 
 leafMap <- leaflet(data = route) %>%
-  setView(lat = lat3M, lng = lon3M, zoom = 10) %>%
-  addPolylines(popup = ~paste("Durée : ", round(duration/60)," minute(s)"), color = ~mycol(leg_mode), weight = 2) %>%
+  setView(lat = 43.608887, lng = 3.880381, zoom = 18) %>%
+  addPolylines(popup = ~paste("Durée : ", round(duration/60)," minute(s)"), color = ~mycol(leg_mode), weight = 4) %>%
   addProviderTiles(providers$CartoDB.Positron)
+
 leafMap
 
 ```
 
-Nous allons enfin choisir d'adapter le contenu des fenêtres contextuelles aux étapes du trajet, par exemple en affichant le mode de transport et la durée de l'étape. Pour séparer ces deux types de contenus informationnels (que nous afficherons en gras grâce à la commande html `<strong></strong>`), nous utiliserons la commande html `<br>` (*break line*) afin de créer un saut de ligne.
+Nous allons enfin choisir d'adapter le contenu des fenêtres contextuelles aux étapes du trajet, par exemple en affichant le mode de transport et la durée de l'étape. Pour séparer ces deux types de contenus informationnels (que nous afficherons en gras grâce à la balise HTML `<strong></strong>`), nous utiliserons la balise HTML `<br>` (*break line*) afin de créer un saut de ligne.
 
 ```{r}
 leafMap <- leaflet(data = route) %>%
-  setView(lat = lat3M, lng = lon3M, zoom = 10) %>%
-  addPolylines(popup = ~paste("<strong>Durée de l'étape :</strong> ", round(leg_duration/60)," minute(s)<br>","<strong>Mode :</strong>", leg_mode), color = ~mycol(leg_mode), weight = 2) %>%
+  setView(lat = 43.608887, lng = 3.880381, zoom = 18) %>%
+  addPolylines(popup = ~paste("<strong>Durée de l'étape :</strong> ", round(leg_duration/60)," minute(s)<br>","<strong>Mode :</strong>", leg_mode), color = ~mycol(leg_mode), weight = 4) %>%
   addProviderTiles(providers$CartoDB.Positron)
+```
+Cliquer sur les tronçons pour obtenir les informations :
+```{r}
 leafMap
-
 ```
 
 # Analyses d'accessibilité sous contrainte temporelle
@@ -678,15 +699,15 @@ Les cartes d'isochrones représentent des zones d'accessibilité égale (en dist
 La fonction `otp_isochrone()` génère des cartes d'isochrone en fonction d'un mode de transport (ou de la combinaison de plusieurs modes). Les paramètres de la fonction sont identiques à ceux utilisés pour générer des itinéraires, à l'exception de l'argument `cutoffSec` qui permet de définir les bornes maximales de chaque intervalle de temps, en secondes (les valeurs doivent donc être multipliées par 60 pour représenter des temps en minutes, par 3600 pour représenter des temps en heures, etc).
 
 ```{r}
-iso_gareStRoch <- otp_isochrone(otpcon = myOtpcon,
+iso_gareStRoch <- otp_isochrone(otpcon = my_otpcon,
             fromPlace = c(3.880727, 43.604937),
-            mode = c("WALK","TRANSIT"),
+            mode = c("WALK", "TRANSIT"),
             maxWalkDistance = 2000,
             date_time = as.POSIXct("2023-04-25 08:00:00"),
-            cutoffSec = c(15, 30, 45, 60, 75, 90) * 60 ) 
+            cutoffSec = c(15, 30, 45, 60, 75, 90) * 60) 
 ```
 
-Nous pouvons utiliser les fonctionnalités de cartographie interactive proposées par la librairie `leaflet` pour R afin de donner à voir le résultat. Pour retrouver des temps de trajet en minutes, nous créeons une variable transformant le temps de trajet associé à l'isochrone (donné en secondes) en le divisant par 60.
+Nous pouvons utiliser les fonctionnalités de cartographie interactive proposées par la bibliothèque `leaflet` pour R afin de donner à voir le résultat. Pour retrouver des temps de trajet en minutes, nous créeons une variable transformant le temps de trajet associé à l'isochrone (donné en secondes) en le divisant par 60.
 
 ```{r}
 iso_gareStRoch$minutes = iso_gareStRoch$time / 60 
@@ -703,7 +724,7 @@ mycol_2 <- colorFactor(
 
 Nous utiliserons la fonction `addPolygons()` afin de figurer les isochrones sur le fond de carte, en introduisant de nouvelles options de mise en forme :
 
--   `stroke=FALSE` : permet de retirer les contours des polygones
+-   `stroke = FALSE` : permet de retirer les contours des polygones
 
 -   `smoothFactor` : définit le niveau de simplication des géométries en fonction du zoom
 
@@ -712,11 +733,12 @@ Nous utiliserons la fonction `addPolygons()` afin de figurer les isochrones sur 
 ```{r}
 leafMap <- leaflet(data = iso_gareStRoch) %>%
   setView(lat = 43.604937, lng = 3.880727, zoom = 10) %>%
-  addPolygons(stroke=FALSE,
+  addPolygons(stroke = FALSE,
               color = ~mycol_2(minutes),
               smoothFactor = 0.2,
               fillOpacity = 1) %>%
   addProviderTiles(providers$CartoDB.Positron) 
+
 leafMap
 ```
 
@@ -725,7 +747,7 @@ Nous allons également ajouter une légende afin de faciliter la lecture de la c
 ```{r}
 leafMap <- leaflet(data = iso_gareStRoch) %>%
   setView(lat = 43.604937, lng = 3.880727, zoom = 10) %>%
-  addPolygons(stroke=FALSE,
+  addPolygons(stroke = FALSE,
               color = ~mycol_2(minutes),
               smoothFactor = 0.2,
               fillOpacity = 1) %>%
@@ -734,8 +756,8 @@ leafMap <- leaflet(data = iso_gareStRoch) %>%
             values = ~minutes,
     title = "Temps d'accès",
     labFormat = labelFormat(suffix = " min"),
-    opacity = 1
-  ) 
+    opacity = 1)
+
 leafMap
 ```
 
@@ -747,16 +769,14 @@ Nous pouvons aussi choisir de superposer les isochrones de temps de trajet en v�
 Générer les isochrones d'accessibilité à la gare Saint-Roch en vélo, en utilisant les mêmes intervalles de temps (en minutes) que ceux mobilisés pour les déplacements combinant marche et transport en commun et le même moment.</div>
 
 ```{r}
-
-iso_gareStRoch_velo <- otp_isochrone(otpcon = myOtpcon,
+iso_gareStRoch_velo <- otp_isochrone(otpcon = my_otpcon,
             fromPlace = c(3.880727, 43.604937),
             mode = "BICYCLE",
             maxWalkDistance = 2000,
             date_time = as.POSIXct("2023-04-25 08:00:00"),
-            cutoffSec = c(15, 30, 45, 60, 75, 90) * 60 ) 
+            cutoffSec = c(15, 30, 45, 60, 75, 90) * 60) 
 
 iso_gareStRoch_velo$minutes = iso_gareStRoch_velo$time / 60 
-
 ```
 
 Pour distinguer les deux modes de déplacement sur la carte, nous construisons une progression chromatique en teintes bleues :
@@ -764,34 +784,33 @@ Pour distinguer les deux modes de déplacement sur la carte, nous construisons u
 ```{r}
 mycol_3 <- colorFactor(
   palette = 'Blues',
-  domain = iso_gareStRoch_velo$minutes
-)
+  domain = iso_gareStRoch_velo$minutes)
 ```
 
-A l'aide de l'option `group` et des fonctionnalités de contrôle des couches introduites par la fonction `addLayersControl()`, il est possible de modifier l'aspect de la carte en fonction des choix d'affichage de l'utilisateur.
+À l'aide de l'option `group` et des fonctionnalités de contrôle des couches introduites par la fonction `addLayersControl()`, il est possible de modifier l'aspect de la carte en fonction des choix d'affichage de l'utilisateur.
 
 ```{r}
 leafMap <- leaflet() %>%
   setView(lat = 43.604937, lng = 3.880727, zoom = 10) %>%
   addPolygons(data = iso_gareStRoch,
-              stroke=FALSE,
+              stroke = FALSE,
               color = ~mycol_2(minutes),
               smoothFactor = 0.2,
               fillOpacity = 1, 
-              group="TRANSIT") %>%
+              group = "TRANSIT") %>%
   addPolygons(data = iso_gareStRoch_velo,
-              stroke=FALSE,
+              stroke = FALSE,
               color = ~mycol_3(minutes),
               smoothFactor = 0.2,
               fillOpacity = 1, 
-              group="VELO") %>%
+              group = "VELO") %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addLayersControl(
     overlayGroups = c("TRANSIT", "VELO"),
-    options = layersControlOptions(collapsed = FALSE)
-  )
+    options = layersControlOptions(collapsed = FALSE))
+
 leafMap
-```
+``` 
 
 L'affichage de la légende peut également être rendu dépendant des fonctionnalités de contrôle des couches via le paramètre `group`.
 
@@ -799,17 +818,17 @@ L'affichage de la légende peut également être rendu dépendant des fonctionna
 leafMap <- leaflet() %>%
   setView(lat = 43.604937, lng = 3.880727, zoom = 10) %>%
   addPolygons(data = iso_gareStRoch,
-              stroke=FALSE,
+              stroke = FALSE,
               color = ~mycol_2(minutes),
               smoothFactor = 0.2,
               fillOpacity = 1, 
-              group="TRANSIT") %>%
+              group = "TRANSIT") %>%
   addPolygons(data = iso_gareStRoch_velo,
-              stroke=FALSE,
+              stroke = FALSE,
               color = ~mycol_3(minutes),
               smoothFactor = 0.2,
               fillOpacity = 1, 
-              group="VELO") %>%
+              group = "VELO") %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addLayersControl(
     overlayGroups = c("TRANSIT", "VELO"),
@@ -820,15 +839,15 @@ leafMap <- leaflet() %>%
             title = "Temps d'accès (TC/marche)",
             labFormat = labelFormat(suffix = " min"),
             opacity = 1,
-       group="TRANSIT"
+       group = "TRANSIT"
   )  %>%
   addLegend("bottomleft", pal = mycol_3, 
             values = iso_gareStRoch_velo$minutes,
     title = "Temps d'accès (vélo)",
     labFormat = labelFormat(suffix = " min"),
     opacity = 1,
-    group="VELO"
-  ) 
+    group = "VELO")
+
 leafMap
 ```
 
@@ -836,7 +855,7 @@ leafMap
 
 L'analyse proposée ici vise à qualifier l'offre de transport en commun entre une ou plusieurs origine(s) en direction d'une destination à partir de la mesure du nombre de déplacements réalisables et de leurs durées. Cette analyse d'accessibilité sous contrainte horaire s'inscrit dans le cadre théorique et méthodologique de la *Time-Geography* (par exemple : @Chapelon2016 ; @Conesa2012 ; @LHostis2004 ; ...).
 
-A titre d'exemple, nous développons un programme permettant de compter tous les déplacements possibles via le réseau de la TAM à partir des 30 mairies de la métropole (hors Montpellier) pour une arrivée entre 7h et 9h à la Gare Saint-Roch. L'objectif est d'évaluer la qualité de l'offre de transport théorique à l'heure de pointe du matin (les retards potentiels liés aux accidents de circulation, aux travaux, etc. ne sont pas pris en compte). 
+À titre d'exemple, nous développons un programme permettant de compter tous les déplacements possibles via le réseau de la TAM à partir des 30 mairies de la métropole (hors Montpellier) pour une arrivée entre 7h et 9h à la Gare Saint-Roch. L'objectif est d'évaluer la qualité de l'offre de transport théorique à l'heure de pointe du matin (les retards potentiels liés aux accidents de circulation, aux travaux, etc. ne sont pas pris en compte). 
 
 ### Préparation des données
 
@@ -845,61 +864,64 @@ La localisation des 30 mairies de la métropole de Montpellier (hors Montpellier
 Les données utilisées dans cet exemple sont disponibles ici :
 
 <p class="center">
-[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span><br/>Télécharger les données](data/mairies_EM.csv)</p>
+[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span><br/>Télécharger les données](data/mairies_3M.csv)</p>
 
 ```{r}
-Mairies <- read.csv("data/mairies_3M.csv", header=TRUE)
-head(Mairies)
+mairies <- read.csv("data/mairies_3M.csv", header = TRUE)
+
+head(mairies)
 ```
 
 Nous transformons la couche d'informations géographiques décrivant les mairies au format *dataframe* en *simple feature dataframe*, c'est-à-dire dans un format explicitement géographique grâce à la fonction `st_as_sf`.
 
 ```{r}
-Mairies <- st_as_sf(Mairies,
-                    coords = c("LAMBERT_X","LAMBERT_Y"),
+mairies <- st_as_sf(mairies,
+                    coords = c("LAMBERT_X", "LAMBERT_Y"),
                     crs = st_crs(2154))
 ```
 
 Les coordonnées géographiques étant en Lambert93, nous les traduisons en WGS84 pour OTP via la fonction `st_transform`.
 
 ```{r}
-Mairies <- st_transform(Mairies, 4326)
+mairies <- st_transform(mairies, 4326)
 ```
 
 Nous choisissons la plage horaire pour laquelle OTP réalisera toutes ses requêtes. L'horaire de départ est 6h et l'horaire de fin 9h afin de nous assurer de récolter les déplacements permettant d'arriver entre 7h et 9h à la gare St-Roch.
 
 ```{r}
 temps_limite <- as.POSIXct("2023-04-19 09:00:00")
+
 temps_debut <- as.POSIXct("2023-04-19 06:00:00")
 ```
 
 Nous crééons ensuite les listes de lieux d'origine et de destination.
 
 ```{r}
-end_places <- c(3.88040,43.60508)
-from_places <- as.matrix(cbind(st_coordinates(Mairies)[,1], st_coordinates(Mairies)[,2]))
+coord_origine <- as.matrix(cbind(st_coordinates(mairies)[,1], st_coordinates(mairies)[,2]))
+
+coord_dest <- c(3.88040, 43.60508)
 ```
 
 ### Exécution de la boucle pour récolter l'offre de transport
 
-Nous construisons ensuite une boucle qui réalise une itération par minute supplémentaire de l'horaire de début jusqu'à l'horaire limite au cours de laquelle nous effectuons des requêtes d'itinéraires en transport en commun depuis les lieux d'origine vers le lieu de destination dont nous enregistrons successivement les caractéristiques dans un tableau de données que nous nommons `route_boucle`.  
+Nous construisons ensuite une boucle qui réalise une itération par minute supplémentaire de l'horaire de début jusqu'à l'horaire limite au cours de laquelle nous effectuons des requêtes d'itinéraires en transport en commun depuis les lieux d'origine vers le lieu de destination dont nous enregistrons successivement les caractéristiques dans un tableau de données que nous nommons `routes`.  
 
 Cette opération peut prendre quelques minutes en fonction du nombre de traitements et d'itérations qu'OTP doit réaliser. La fonction `tryCatch()` permet à la boucle de fonctionner malgré une éventuelle erreur de connexion au serveur OTP, due à des instabilités ponctuelles.
 
 ```{r}
-route_boucle <- data.frame()
+routes <- data.frame()
 
 while(temps_debut < temps_limite){
   tryCatch({
-    resultats <- otp_plan(otpcon=myOtpcon, 
-                          fromPlace = from_places,
-                          toPlace = end_places,
-                          mode = c("TRANSIT","WALK"),
+    resultats <- otp_plan(otpcon = my_otpcon, 
+                          fromPlace = coord_origine,
+                          toPlace = coord_dest,
+                          mode = c("TRANSIT", "WALK"),
                           date_time = temps_debut,
                           maxWalkDistance = 1000,
-                          get_geometry=FALSE)
+                          get_geometry = FALSE)
     temps_debut <- temps_debut + 60
-    route_boucle <- rbind(route_boucle, resultats)
+    routes <- rbind(routes, resultats)
   }, error = function(e) {
     print(paste("Erreur dans la boucle :", e$message))
   })
@@ -911,18 +933,17 @@ while(temps_debut < temps_limite){
 Puisque nous voulons compter le nombre de déplacements possibles avec une arrivée à destination entre 7h et 9h, la période de pointe, nous supprimerons les déplacements hors-champ (arrivée avant 7h et après 9h).
 
 ```{r}
-route_boucle <- route_boucle[!(route_boucle$endTime < "2023-04-19 07:00:00" | route_boucle$endTime > "2023-04-19 09:00:00"), ]
+routes <- routes[!(routes$endTime < "2023-04-19 07:00:00" | routes$endTime > "2023-04-19 09:00:00"), ]
 ```
 
 La boucle d'itérations a récolté un grand nombre de doublons : d'une minute à une autre, l'offre de transport renvoyée par OTP ne change pas systématiquement. De ce fait, nous sélectionnons les seuls déplacements uniques renvoyés par le serveur OTP avec la commande `distinct`. 
 
 ```{r}
-tableau_resultat <- route_boucle %>%
+tableau_resultat <- routes %>%
   semi_join(
-    route_boucle %>%
+    routes %>%
       distinct(fromPlace) %>%
-      select(fromPlace)
-  ) 
+      select(fromPlace))
 ``` 
 
 Enfin, nous calculons la moyenne de la durée des déplacements uniques de chacune des mairies.
@@ -941,9 +962,9 @@ Le graphique ci-dessous représente la distribution des temps de trajets moyens 
 ```{r}
 ggplot() + geom_histogram(aes(x = tableau_resultat$duree_moy),
                           bins = 9,
-                          color="black", 
-                          fill="lightblue") +
-    labs(title="Histogramme", x="Temps de trajet moyens", y = "Nombre de mairies") +
+                          color = "black", 
+                          fill = "lightblue") +
+    labs(title = "Histogramme des temps de trajets moyens obtenus pour les 30 communes", x = "Temps de trajet moyens", y = "Nombre de mairies") +
     theme_classic() # thème de fond (ici "classic")
 ``` 
 
@@ -955,19 +976,22 @@ Nous souhaitons savoir si les différences de temps de trajets moyens s'organise
 
 ```{r}
 library(stringr)
-tableau_resultat$x <- word(tableau_resultat$fromPlace, 1, sep=",")
-tableau_resultat$y <- word(tableau_resultat$fromPlace, 2, sep=",")
-tableau_resultat <- st_as_sf(tableau_resultat, coords = c("y","x"),
+
+tableau_resultat$x <- word(tableau_resultat$fromPlace, 1, sep = ",")
+
+tableau_resultat$y <- word(tableau_resultat$fromPlace, 2, sep = ",")
+
+tableau_resultat <- st_as_sf(tableau_resultat, coords = c("y", "x"),
                     crs = st_crs(4326))
 ``` 
 
 Nous choisissons de représenter ces différentiels d'accessibilité sous forme d'une cartographie statique. Le nombre de trajets réalisables par commune est figuré par le biais de cercles proportionnels. Les durées moyennes de ces trajets sont discrétisées par classes d'intervalles égaux.
 
-De nombreuses librairies existent pour réaliser de la cartographie avec R, dont la librairie phare de création de graphiques sous R : `ggplot2`.
+De nombreuses bibliothèques existent pour réaliser de la cartographie avec R, dont la bibliothèque phare de création de graphiques sous R : `ggplot2`.
 
-`mapsf` a toutefois été créée en 2021 dans le but spécifique de faciliter la production de cartes thématiques conformes au règle de la sémiologie graphique sous R, à partir de données au format `sf`. Les principales fonctionnalités de la librairie sont recensées dans un document graphique téléchargeable [ici](https://raw.githubusercontent.com/riatelab/mapsf/master/vignettes/web_only/img/mapsf_cheatsheet.pdf).
+`mapsf` a toutefois été créée en 2021 dans le but spécifique de faciliter la production de cartes thématiques conformes au règle de la sémiologie graphique sous R, à partir de données au format `sf`. Les principales fonctionnalités de la bibliothèque sont recensées dans un document graphique téléchargeable [ici](https://raw.githubusercontent.com/riatelab/mapsf/master/vignettes/web_only/img/mapsf_cheatsheet.pdf).
 
-La fonction `mf_map()` de la librairie `mapsf` est la fonction centrale du package qui permet de construire une carte au format varié à partir des paramètres :
+La fonction `mf_map()` de la bibliothèque `mapsf` est la fonction centrale du package qui permet de construire une carte au format varié à partir des paramètres :
 
 - `x` l’objet au format sf ;
 
@@ -981,21 +1005,44 @@ Notons que la cartographie paginée nécessite d'utiliser des coordonnées défi
 tableau_resultat <- st_transform(tableau_resultat, 2154)
 EPCI_3M <- st_transform(EPCI_3M, 2154)
 
+gare_st_Roch <- data.frame(x = 3.880731, y = 43.604622)
+gare_st_Roch <- st_as_sf(gare_st_Roch, coords = c("x", "y"), crs = 4326)
+gare_st_Roch <- st_transform(gare_st_Roch, 2154)
+gare_st_Roch$nom <- "Gare Saint-Roch"
+
 library(mapsf)
-mf_init(x = tableau_resultat, theme = "iceberg", expandBB= c(0.3, 0.3, 0.3, 0.3))
+
+mf_init(x = tableau_resultat, theme = "iceberg", expandBB = c(0.3, 0.3, 0.3, 0.3))
+
 mf_map(EPCI_3M, add = TRUE)
+
 mf_map(tableau_resultat,
        type = "prop_choro",
-       var = c("nb_endTime","duree_moy"),
+       var = c("nb_endTime", "duree_moy"),
        inches = 0.15,
-  border = "grey50",
-  lwd = 1,
-  leg_pos = c("left", "right"),
-  leg_title = c("Nombre", "Temps\nmoyen\n(en min)"),
-  breaks = "equal",
-  nbreaks = 9,
-  pal = "Greens",
-  leg_frame = c(TRUE, TRUE))
+       border = "grey50",
+       lwd = 1,
+       leg_pos = c("left", "right"),
+       leg_title = c("Nombre", "Temps\nmoyen\n(en min)"),
+       breaks = "equal",
+       nbreaks = 9,
+       pal = "Greens",
+       leg_frame = c(TRUE, TRUE))
+
+mf_base(gare_st_Roch,
+       add = TRUE,
+       col = "blue",
+       cex = 2,
+       pch = 15)
+
+mf_label(gare_st_Roch,
+         var = "nom",
+         col = "blue",
+         halo = TRUE,
+         cex = 1,
+         bg = "white",
+         pos = c(4, 1),
+         r = 0.07)
 
 mf_layout(
   title = "Trajets mairies vers gare St-Roch",
@@ -1005,9 +1052,7 @@ mf_layout(
     "mapsf ",
     packageVersion("mapsf")
   ),
-  frame = TRUE
-)
-
+  frame = TRUE)
 ```
 
 N'oubliez pas d'arrêter le serveur OTP une fois vos analyses terminées, comme il en est le cas pour ce tutoriel !
@@ -1018,10 +1063,10 @@ otp_stop()
 
 # Conclusion
 
-L'outil OTP et son intégration dans R permet donc de mobiliser facilement les nouvelles données de l'offre de transport et de calcul d'itinéraires multimodaux pour porter un regard affiné sur l'accessibilité territoriale, à l'aide d'indicateurs d'analyses éprouvés en géographie et en aménagement : matrices O/D, isochrones de distance, nombre de déplacements possibles sous contrainte horaire, etc. Nous espérons que cette fiche RZINE vous aura aidés à vous en approprier les fonctionnalités et potentialités.
+L'outil OTP et son intégration dans R permet donc de mobiliser facilement les nouvelles données de l'offre de transport et de calcul d'itinéraires multimodaux pour porter un regard affiné sur l'accessibilité territoriale, à l'aide d'indicateurs d'analyses éprouvés en géographie et en aménagement : matrices O/D, isochrones de distance, nombre de déplacements possibles sous contrainte horaire, etc.
 
 # Perspectives
-De nombreuses perspectives sont ouvertes à l'issue de ce travail, telles que l'ajout d'autres opérateurs de TC pour compléter l'offre de la TAM ou encore l'addition d'un modèle numérique de terrain afin de tenir compte de la pénibilité induite par certaines pentes dans le cas de trajets piétons ou cyclables.
+De nombreuses perspectives sont ouvertes à l'issue de ce travail, telles que l'ajout d'autres opérateurs de transport collectif pour compléter l'offre de la TAM ou encore l'addition d'un modèle numérique de terrain afin de tenir compte de la pénibilité induite par certaines pentes dans le cas des déplacements à vélo.
 
 
 
@@ -1034,14 +1079,14 @@ De nombreuses perspectives sont ouvertes à l'issue de ce travail, telles que l'
 
 ## Info session  {-}
 
-```{r session_info, echo=FALSE}
+```{r session_info, echo = FALSE}
 kableExtra::kable_styling(knitr::kable(rzine::sessionRzine()[[1]], row.names = F))
 kableExtra::kable_styling(knitr::kable(rzine::sessionRzine()[[2]], row.names = F))
 ```
 
 ## Citation {-}
 
-```{r Citation, echo=FALSE}
+```{r Citation, echo = FALSE}
 rref <- bibentry(
    bibtype = "misc",
    title = "Analyse d’accessibilité multimodale",
@@ -1061,7 +1106,7 @@ rref <- bibentry(
 
 ### BibTex : {-}
 
-```{r generateBibTex, echo=FALSE}
+```{r generateBibTex, echo = FALSE}
 
 writeLines(toBibtex(rref), "cite.bib")
 toBibtex(rref)
