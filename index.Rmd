@@ -48,23 +48,25 @@ knitr::opts_chunk$set(echo = TRUE,
 
 L'analyse de l'accessibilité multimodale est au coeur des politiques de transport, et constitue l'un des enjeux majeurs de la planification territoriale. L'émergence de nouvelles données de suivi de l'offre de transport et d'outils adaptés à leur analyse permet aujourd'hui de porter un regard fin sur le domaine. C'est le cas de l'outil OpenTripPlanner qui fait l'objet de ce tutoriel.
 
-Celui-ci a été construit dans le but d'accompagner son apprentissage via l'usage du langage R, et se distingue des documentations existantes par l'entrée thématique qu'il propose. Il repose sur un cas d'étude illustratif des potentialités d'analyse offertes par le croisement d'OTP et des nouvelles données de l'offre de transport : Montpellier Méditerranée Métropole.
+Celui-ci a été construit dans le but d'accompagner son apprentissage via l'usage du langage R, et se distingue des documentations existantes par l'entrée thématique qu'il propose. Il repose sur un cas d'étude illustratif des potentialités d'analyse offertes par le croisement d'OTP et des nouvelles données ouvertes décrivant l’offre de transport : la métropole de Montpellier (Montpellier Méditerranée Métropole ou Montpellier 3M).
 
 ## Accessibilité multimodale
 
 L'accessibilité est un concept utilisé en géographie pour qualifier "la plus ou moins grande facilité avec laquelle [un] lieu peut être atteint à partir d'un ou de plusieurs autres lieux, par un ou plusieurs individus susceptibles de se déplacer à l'aide de tout ou partie des moyens de transport existants" (Laurent Chapelon in [Encyclopédie Hypergeo](https://hypergeo.eu/accessibilite/)).
 
-Étudier l'accessibilité multimodale d'un lieu ou d'un ensemble de lieux revient donc à mesurer puis à comparer les possibilités de déplacement et leur pénibilité associée en tenant compte de l'ensemble des modes de transport disponibles : transports en commun, à pieds, à vélo, ou en voiture, notamment.
+Étudier l'accessibilité multimodale d'un lieu ou d'un ensemble de lieux revient donc à mesurer puis à comparer les possibilités de déplacement et leur pénibilité associée en tenant compte de l’ensemble des modes : transports en commun, marche, vélo, voiture, notamment.
 
 ## Le projet OpenTripPlanner
 
-[OpenTripPlanner](http://www.opentripplanner.org/) est un logiciel libre développé en Java permettant de créer et d'interroger un planificateur d'itinéraire multimodal personnalisé. Créé en 2009 par TriMet, l'agence de transport en commun de Portland (Oregon), il s'est ensuite développé, et englobe aujourd'hui une communauté mondiale d'utilisateurs et de développeurs.
+[OpenTripPlanner](http://www.opentripplanner.org/) est un logiciel libre développé en Java permettant de créer et d'interroger un planificateur d'itinéraire multimodal personnalisé. Créé en 2009 pour TriMet, l'agence de transport en commun de Portland (Oregon), par l'équipe d'informaticiens du consultant Conveyal, OTP s'est ensuite développé, et englobe aujourd'hui une communauté mondiale d'utilisateurs et de développeurs.
 
-L'analyse de l'accessibilité par des réseaux de transport multimodaux, opérant à différentes échelles et gérés par des autorités organisatrices variées, marque une étape importante dans le champ de la géographie des transports. Les déplacements optimaux déterminés par OTP correspondent au plus court chemin, c'est-à-dire à la minimisation du temps de déplacement pour l'usager (algorithmes de Dijkstra (@Dijkstra), A\* (@Hart1968) et assimilés). L'intermodalité (combinaison de plusieurs modes et réseaux de transport) et l'intramodalité (combinaison de plusieurs véhicules au sein d'un même réseau de transport) sont également intégrées dans OTP, avec la gestion optimale des correspondances (minimisation du temps de marche entre deux arrêts et du temps d'attente). OTP se prête donc aux analyses territoriales de l'accessibilité, en simulant les meilleurs déplacements possibles pour l'usager en fonction des différents modes de transport qu'il a à sa disposition pour un horaire donné.
+L'analyse de l'accessibilité par des réseaux de transport multimodaux, opérant à différentes échelles et gérés par des autorités organisatrices variées, marque une étape importante dans le champ de la géographie des transports. Les déplacements optimaux déterminés par OTP correspondent au plus court chemin, c'est-à-dire à la minimisation du temps de déplacement pour l'usager (algorithmes de Dijkstra (@Dijkstra), A\* (@Hart1968) et assimilés). L'intermodalité (combinaison de plusieurs modes et réseaux de transport) et l'intramodalité (combinaison de plusieurs véhicules au sein d'un même réseau de transport) sont également intégrées dans OTP, avec la gestion optimale des correspondances (minimisation du temps de marche entre deux arrêts et du temps d'attente). OTP se prête donc aux analyses territoriales de l'accessibilité, en simulant les meilleurs déplacements possibles pour l'usager en fonction des différents modes de transport à sa disposition pour un horaire donné.
 
-Brièvement, OTP construit un graphe décrivant les itinéraires reliant l'ensemble des localisations d'un territoire donné, en transport en commun comme par la route, à partir de données *General Transit Feed Specification (GTFS)* pour le réseau de transport en commun (bus, métros, tramways, trains) et de données *OpenStreetMap* pour les modes de transport individuels qui utilisent le réseau viaire (voiture, vélo, piéton). Le logiciel dépend donc de données ouvertes renseignées dans des formats de fichier standards. Sur ce point, rappelons que les autorités organisatrices de la mobilité (AOM) ont l'obligation de transmettre leurs données de l'offre de transport (règlement européen 2017/1926, art. 25 de la LOM de 2019) sur le point d'accès national [(PAN)](https://transport.data.gouv.fr/).
+Brièvement, OTP construit un graphe décrivant les itinéraires reliant l'ensemble des localisations d'un territoire donné, en transport en commun comme par la route, à partir de données GTFS (*General Transit Feed Specification*) pour le réseau de transport en commun (bus, métros, tramways, trains) et de données *OpenStreetMap* pour les modes de transport individuels qui utilisent le réseau viaire (voiture, vélo, piéton). Le logiciel dépend donc de données ouvertes renseignées dans des formats de fichier standards. Sur ce point, rappelons que les autorités organisatrices de la mobilité (AOM) ont l'obligation de transmettre leurs données de l'offre de transport (règlement européen 2017/1926, art. 25 de la LOM de 2019) sur le point d'accès national [(PAN)](https://transport.data.gouv.fr/).
 
-Le [code source d'OTP](https://github.com/opentripplanner/OpenTripPlanner) est publié en accès libre sur la plateforme Github.
+Le [code source d'OTP](https://github.com/opentripplanner/OpenTripPlanner) est publié en accès libre sur la plateforme GitHub.
+
+Notons l'existence de la bibliothèque [`r5r`](https://ipeagit.github.io/r5r/) qui utilise le logiciel Java open source R5, dérivé d'OpenTripPlanner. Il a été mis en place par l'équipe de consultant informatique Conveyal et adapté à R par @Pereira2021. Il propose des fonctionnalités analogues à la bibliothèque `opentripplanner` (calcul d'accessibilité, matrice O/D, isochrones, etc.).
 
 ## Ressources
 
@@ -95,13 +97,13 @@ Deux formats de données statiques sont privilégiés :
 
 ### Exemple des données de Montpellier 3M
 
-Les données renseignant l'offre de transport théorique de TAM (Transport de l'agglomération de Montpellier) sont fournies au format GTFS depuis le point d'accès national aux données de transport à [cette adresse](https://transport.data.gouv.fr/datasets/offre-de-transport-de-montpellier-mediterranee-metropole-tam-gtfs), et peuvent être converties au format GeoJSON et au format NeTEx directement depuis le site de téléchargement.
+Nous utiliserons dans ce tutoriel le cas de la métropole de Montpellier. La métropole est constituée de 31 communes comptant 499 761 habitants en 2020 (INSEE RP2020). Elle détient la compétence d'autorité organisatrice des mobilités (AOM) sur son ressort territorial et opère 4 lignes de tramway et 41 lignes de bus. Cet exemple servira d'illustration des méthodes présentées dans cette fiche afin de disposer d'un cas d'étude simplifié, mais d'autres échelles territoriales sont bien sûr possibles en ajoutant les données de l'offre en adéquation avec l'échelle d'analyse (offre régionale, ferroviaire, autres AOM locales, etc.). Les données renseignant l'offre de transport théorique de TAM (Transports de l'agglomération de Montpellier) sont fournies au format GTFS depuis le point d'accès national aux données de transport à [cette adresse](https://transport.data.gouv.fr/datasets/offre-de-transport-de-montpellier-mediterranee-metropole-tam-gtfs), et peuvent être converties au format GeoJSON et au format NeTEx directement depuis le site de téléchargement.
 
 L'extraction des données utilisées pour ce tutoriel a été réalisée le 27 mars 2023. Elles décrivent l'offre de transport de façon statique pour la période s'écoulant du 16 mars 2023 au 14 mai 2023. Les données utilisées pour ce tutoriel ont été actualisées pour la dernière fois à la date du 25 mars 2023.
 
 Le dossier contient différents fichiers au format texte, renseignant chacun une partie du système de transport sous la forme d'un tableau de données utilisant des virgules comme séparateurs de colonnes :
 
--   **agency** : le fichier contient des informations sur les compagnies (*agences*) de transport en commun opérant sur le réseau étudié (ex : identifiant, nom, site web, téléphone, fuseau horaire...) ;
+-   **agency** : le fichier contient des informations sur les compagnies (*agences*) de transport en commun opérant sur le réseau étudié (ex : identifiant, nom, site web, téléphone, fuseau horaire,...) ;
 
 -   **routes** : le fichier catalogue les lignes du réseau de transport, qu'il décrit par le biais d'identifiants et de noms courts ou longs, par type de transport, par mode de ramassage et de descente, et d'autres informations plus ou moins formalisées. Une couleur peut être associée à une route afin d'en faciliter le repérage par les utilisateurs ;
 
@@ -127,7 +129,8 @@ knitr::include_graphics("figures/gtfs_wiki.png")
 
 L'utilisation du réseau viaire (routes, chemins) est indispensable pour calculer les itinéraires des modes individuels (voiture, piéton et cycliste) et des modes collectifs (pré et post-acheminement, gestion des correspondances). Pour cela, nous utiliserons les données issues du projet de cartographie collaborative *OpenStreetMap* (OSM).
 
-La complétude et la précision des données varient d'un territoire, d'une échelle géographique et d'une temporalité à l'autre, à ce propos on lira par exemple @Herfort2022. Il faut donc être vigilant à cet aspect en amont de leur utilisation dans le cadre d'une analyse d'accessibilité qui utilise le réseau viaire. En France, la plateforme recense l'ensemble des données géographiques publiques en Open Data en complément de l'information géographique volontaire. Une présentation des données OSM est par exemple proposée par @Mericskay2017.
+La complétude et la précision des données varient d'un territoire, d'une échelle géographique et d'une temporalité à l'autre ; à ce propos, on lira par exemple @Herfort2022. Il faut donc être vigilant à cet aspect en amont de leur utilisation dans le cadre d'une analyse d'accessibilité qui utilise le réseau viaire. En France, la plateforme recense l'ensemble des données géographiques publiques en Open Data en complément de l'information géographique volontaire. Une présentation des données OSM est par exemple proposée par @Mericskay2017.
+
 
 ### Téléchargement des données depuis la Geofabrik
 
@@ -141,7 +144,7 @@ library(osmextract)
 
 Nous allons utiliser le fichier décrivant les limites de la métropole de Montpellier 3M afin de créer un filtre spatial lors du téléchargement des données OSM depuis la Geofabrik. Pour cela, nous l'importons dans le projet en cours via la fonction `st_read()` de la bibliothèque `sf`.
 
-Le fichier GeoJSON des communes de la métropole de Montpellier est disponible ici :
+Le fichier GeoJSON décrivant le territoire de la métropole de Montpellier est disponible ici :
 
 <p class="center">
 [<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span><br/>Télécharger les données](data/EPCI_MONTPELLIER.geojson)</p>
@@ -151,22 +154,21 @@ library(sf)
 epci_3m <- st_read("data/EPCI_MONTPELLIER.geojson")
 ```
 
-La fonction `oe_match()` de la bibliothèque `osmextract` permet d'associer par le biais d'une relation d'appartenance géographique un lieu d'entrée avec l'URL du fichier .osm.pbf correspondant, qu'elle enregistre dans une liste.
+La fonction `oe_get()` de la bibliothèque `osmextract` permet d'associer par le biais d'une relation d'appartenance géographique un lieu d'entrée (option `place`) avec l'URL du fichier .osm.pbf correspondant (dans le cas de la métropole de Montpellier, il s'agit de l'ancienne région Languedoc Roussillon), qu'elle enregistre dans une liste puis télécharge. Le paramètre `boundary` permet d'associer un filtre spatial à la requête, et de ne télécharger que les objets contenus dans les limites géographiques désignées (et renseignées au format sf/sfc/bbox). Notons que la fonction appelle en interne la fonction `oe_vectortranslate()` qui traduit le fichier osm.pbf en fichier *geopackage* (.gpkg) avant de le lire. Le filtre spatial ne s'applique que sur le fichier .gpkg qu'elle télécharge, et pas sur le fichier .osm.pbf étant lui aussi téléchargé. Des options d'enregistrement du fichier peuvent être ajoutées, par exemple afin de forcer la mise à jour si le fichier a été téléchargé auparavant (paramètre `force_download`) ou pour indiquer le chemin d'accès du répertoire dans lequel enregistrer le fichier (paramètre `download_directory`) en remplacement de la valeur par défaut (répertoire temporaire).
 
 ```{r, eval = FALSE}
-osm_3m_url <- oe_match(epci_3m) 
+
+contours_3m <- st_as_sf(st_union(epci_3m))
+
+osm_3m <- oe_get(place = contours_3m, 
+                      boundary = contours_3m, 
+                      force_download=TRUE, 
+                      download_directory=getwd())
+
 ```
 
-On peut alors télécharger le fichier par la biais de la fonction `oe_download()` de la bibliothèque, en indiquant l'url du fichier, sa taille et le chemin d'accès du répertoire dans lequel on souhaite consigner le fichier (par exemple, le dossier temporaire).
 
-```{r, eval = FALSE}
-oe_download(
-file_url = osm_3m_url$url,
-file_size = osm_3m_url$file_size,
-#provider = "test",
-download_directory = tempdir()
-)
-```
+Notons qu'il est possible d'extraire les données OSM au format .pbf depuis une source externe, comme le propose le [site BBBike extract](https://extract.bbbike.org/) par exemple. Le site permet notamment de définir un cadre de délimitation (*bounding box*) pour les informations spatiales à télécharger, ce qui réduira a posteriori la taille du graphe construit pour lancer les requêtes OTP.
 
 ### Description des données osm.pbf
 
@@ -175,20 +177,34 @@ Le format des données ainsi téléchargées (*Protocolbuffer Binary Format*) es
 Par curiosité (mais cela n'est pas une étape nécessaire pour la mise en oeuvre de la chaîne de traitements), on peut importer les couches d'information géographique souhaitées une à une ou de façon groupée via la fonction `st_read()`, en spécifiant la couche (organisée par type de géométrie) et en créant une requête sur les attributs, par exemple en sélectionnant les routes (*key = highway*) dans la couche.
 
 ```{r, eval = FALSE}
-osm_highways <- sf::read_sf("C:\\Users\\33658\\AppData\\Local\\Temp\\RtmpCYFlTP\\geofabrik_languedoc-roussillon-latest.osm.pbf", layer = "lines", query = "select highway from lines")
+osm_highways <- sf::read_sf("geofabrik_languedoc-roussillon-latest.osm.pbf", layer = "lines", query = "select highway from lines")
 ```
+
+### Utilisation des tags OSM pour les itinéraires routiers
+
+OTP permet de définir un ensemble de critères pour décider quand une rue est autorisée aux piétons, aux vélos ou aux voitures. Par défaut, OTP utilise les tags OSM et considère que :
+
+- les mobilités piétonnes et cyclables ne sont pas autorisées sur les routes décrites comme `highway=trunk`, `highway=trunk_link`, `highway=motorway`, `highway=motorway_link`, ou `highway=construction`.
+
+- les mobilités piétonnes et cyclables sont toutes les deux autorisées sur les routes décrites comme `highway=pedestrian`, `highway=cycleway`, et `highway=footway`.
+
+- les vélos ne sont pas autorisés sur les routes de type `highway=footway` lorsque lui sont associées les étiquettes suivantes : `footway=sidewalk`, `public_transport=platform`, ou `railway=platform`.
+
+Depuis la version 2 d'OTP, le logiciel permet de définir des niveaux de sécurisation des routes pour les trajets piétons et cyclables en fonction des tags OSM. Ces options ne sont pas intégrées dans la version 1.5 du logiciel mobilisée dans la librairie R faisant l'objet de cette fiche.
 
 ## Relations entre données GTFS et données OpenStreetMap
 
 Si un arrêt de transport, localisé par le GTFS, se trouve dans un bâtiment, il est nécessaire d’être vigilant à sa connexion au graphe OpenStreetMap, sans quoi l’isolement de l’arrêt rendra impossible les parcours à pied (impossibilité de créer les pré- et post-acheminements ainsi que les correspondances à pied entre deux arrêts).
 
-Par exemple, les cheminements piétons dans les gares ne sont pas systématiquement renseignés dans OpenStreetMap, ni les escaliers ou ascenseurs permettant de changer de quai. D’expérience, les gares les plus importantes sont correctement géoréférencées mais toutes ne le sont pas. Un arrêt isolé du graphe piéton ne permet pas au logiciel de comprendre qu’il peut entrer et sortir de la gare, ou réaliser une correspondance entre un TGV et un TER dans la même gare s’il doit se déplacer dans celle-ci, faute d’un graphe piéton disponible. 
+Par exemple, les cheminements piétons dans les gares ne sont pas systématiquement renseignés dans OpenStreetMap, ni les escaliers ou ascenseurs permettant de changer de quai. D’expérience, les gares les plus importantes sont correctement géoréférencées mais toutes ne le sont pas. Un arrêt isolé du graphe piéton ne permet pas au logiciel de comprendre qu’il peut entrer et sortir de la gare, ou réaliser une correspondance entre un TGV et un TER dans la même gare s’il doit se déplacer dans celle-ci, faute d’un graphe piéton disponible.
+
+Un arrêt de transport renseigné peut aussi avoir des coordonnées géographiques erronées qu'il est indispensable de modifier.
 
 Il nous semble que deux solutions peuvent alors être envisagées :
 
 - Contribuer à OpenStreetMap pour ajouter les informations manquantes. Les données .osm.pbf, parmi d'autres formats disponibles, de la Geofabrik sont quotidiennement mises à jour ;
 
-- Modifier la localisation du point d’arrêt créé par le GTFS. Cela peut être intéressant pour déplacer un arrêt avec des coordonnées imprécises. Ainsi, le point peut être replacé dans un espace connecté au graphe piéton, comme l’entrée de la gare. Les coordonnées des arrêts sont rangées dans le fichier *stops*.
+- Modifier la localisation du point d’arrêt créé par le GTFS. Cela peut être intéressant pour déplacer un arrêt avec des coordonnées imprécises ou erronées. Ainsi, le point peut être replacé dans un espace connecté au graphe piéton, comme l’entrée de la gare. Les coordonnées des arrêts sont rangées dans le fichier *stops*.
 
 # Préparation de l'environnement R pour OTP
 
@@ -259,7 +275,7 @@ Le paramètre `dir` indique le chemin d'accès vers le répertoire contenant les
 
 Le paramètre `memory` prend un nombre entier qui renseigne sur la quantité de mémoire à attribuer à OTP (par défaut 2048 Mo). La quantité de mémoire dépend de la taille de l'espace géographique à l'étude, de la puissance de votre machine et de la version de Java utilisée (idéalement du 64 bits, vous serez limités à quelques Go si vous utilisez le 32 bits).
 
-Le territoire métropolitain de Montpellier correspond à un espace géographique de taille intermédiaire, nous allons donc demander à utiliser 10 Go de mémoire (c'est-à-dire 10000 Mo).
+Le territoire métropolitain de Montpellier correspond à un espace géographique de taille intermédiaire, nous allons donc demander à utiliser 10 Go de mémoire (c'est-à-dire 10000 Mo). Cette valeur est à définir en fonction des capacités de votre ordinateur et de l'aire d'étude que vous souhaitez étudier.
 
 Notons ici qu'OTP est optimisé pour réaliser des routages à l'échelle d'une ville et que ses performances se dégraderont avec de plus grandes zones.
 
@@ -281,7 +297,7 @@ Un fichier `router-config.json`, facultatif pour démarrer une session OTP, pour
 Pour reproduire le prochain exemple, le répertoire OTP et les données sont disponibles sur Zenodo :
 
 <p class="center">
-[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span><br/>Télécharger les données](https://zenodo.org/records/10027161)</p>
+[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span><br/>Télécharger les données](https://zenodo.org/records/10793738)</p>
 
 # Lancer OTP
 
@@ -314,7 +330,7 @@ knitr::include_graphics("figures/VertBoisOTP2.png")
 ```
 
 <div class="alert alert-success" role="alert">
-Nous allons dans un premier temps rechercher les itinéraires possibles en transport en commun entre les arrêts de transport en commun Vert-Bois et Port-Marianne, respectant des distances à pieds maximales de 1000m et étant disponibles au moment de la requête (**ex : le 30 mars 2023, à 15h08**).</div>
+Nous allons dans un premier temps rechercher les itinéraires possibles en transport en commun entre les arrêts de transport en commun Vert-Bois et Port-Marianne, respectant des distances à pieds maximales de 1000 m et étant disponibles au moment de la requête (**ex : le 30 mars 2023, à 15h08**).</div>
 
 ```{r, echo = FALSE, out.width = "100%",  fig.align = 'center'}
 knitr::include_graphics("figures/Itineraire1.png")
@@ -325,7 +341,7 @@ Notons ici l'importance des bornes temporelles de validité des fichiers GTFS da
 D'autres paramétrages sont directement accessibles depuis l'interface, comme l'illustre l'exemple ci-dessous.
 
 <div class="alert alert-success" role="alert">
-Nous paramétrons les cheminements piétons en renseignant une distance maximale de marche de 100m.</div>
+Nous paramétrons les cheminements piétons en renseignant une distance maximale de marche de 100 m.</div>
 
 ```{r, echo = FALSE, out.width = "50%",  fig.align = 'center'}
 knitr::include_graphics("figures/notravelfound.png")
@@ -344,6 +360,8 @@ On peut aisément calculer l'impact du choix d'un itinéraire 100% adapté au v�
 ```{r, echo = FALSE, out.width = "100%",  fig.align = 'center'}
 knitr::include_graphics("figures/Itineraire3.png")
 ```
+
+<div class="alert alert-success" role="alert"> Quelle est la durée du trajet reliant les campus route de Mende (coordonnées GPS 43.63008, 3.87031) et Saint-Charles (coordonnées GPS 43.61591, 3.87427) par un itinéraire piéton ?</div>
 
 ## Connecter R à l'instance locale d'OTP
 
@@ -408,7 +426,7 @@ Le fichier est organisé sous la forme de quatre listes, comprenant chacune un e
 -   `$timeouts` : liste les délais maximums de calcul des 1er, 2e, 3e, etc. itinéraires.
 
 <div class="alert alert-success" role="alert">
-On peut ainsi facilement remplacer une valeur par défaut, par exemple en modifiant la vitesse de marche (de 1,34 mètres par seconde) pour une allure de marche de type promenade, qui équivaudrait à 3km/h. On obtient une vitesse en m/s en divisant une vitesse en km/h par 3.6 : 3km/h $=$ 0,84 m/s.</div>
+On peut ainsi facilement remplacer une valeur par défaut, par exemple en modifiant la vitesse de marche (de 1,34 mètres par seconde) pour une allure de marche de type promenade, qui équivaudrait à 3 km/h. On obtient une vitesse en m/s en divisant une vitesse en km/h par 3.6 : 3 km/h $=$ 0,84 m/s.</div>
 
 ```{r}
 router_config$routingDefaults$walkSpeed <- as.numeric(0.84)
@@ -446,17 +464,8 @@ my_otpcon <- otp_connect(timezone = "Europe/Paris", router = "default")
 ```
 
 <div class="alert alert-success" role="alert">
-Afin de vérifier la bonne prise en compte des paramètres de configuration, nous allons calculer la vitesse moyenne de l'itinéraire piéton séparant la place de la Comédie de la plage du Prevost.</div>
+Afin de vérifier la bonne prise en compte des paramètres de configuration, nous pouvons par exemple comparer la durée du trajet piétonnier effectué entre les campus route de Mende et Saint-Charles de l'université Paul Valéry Montpellier 3 (d'une longueur d'1,8 km) avec les durées obtenues pour des vitesses de marche de 1,34 m/s (23 minutes) et 0,84 m/s (35 minutes).</div>
 
-```{r,eval = FALSE}
-route_bis <- otp_plan(otpcon = my_otpcon, 
-                  fromPlace = c(3.87943, 43.60844), 
-                  toPlace = c(3.96915, 43.54009),
-                  mode = "WALK",
-                  date_time = as.POSIXct("2023-04-19 10:15:00"))
-
-route$walkDistance/route$duration
-```
 
 # Création d'itinéraires
 
@@ -707,7 +716,7 @@ Nous proposons dans ce tutoriel deux types d'analyse d'accessibilité multimodal
 
 ## Isochrones d'accessibilité
 
-Les cartes d'isochrones représentent des zones d'accessibilité égale (en distance ou en temps de déplacement notamment) à partir d'un certain point de départ. Elles figurent généralement plusieurs zones d'accessibilité, afin de représenter les différentiels croissants de coût du déplacement à mesure que l'on s'éloigne du lieu d'intérêt.
+Les cartes d'isochrones délimitent des aires d'accessibilité équivalentes en temps de déplacement à partir d'un certain point de départ. Elles figurent généralement plusieurs zones d'accessibilité, afin de représenter les différentiels croissants de coût du déplacement à mesure que l'on s'éloigne du lieu d'intérêt.
 
 ### Localiser les différentiels d'accès à un lieu selon un mode de déplacement
 
@@ -745,6 +754,16 @@ Nous utiliserons la fonction `addPolygons()` afin de figurer les isochrones sur 
 
 -   `fillOpacity` : contrôle le niveau d'opacité (resp. de transparence) du remplissage.
 
+Avant de créer la carte, nous téléchargeons les lignes de tramway de la métropole de Montpellier (format shapefile) afin de faciliter l'interprétation des résultats :
+
+<p class="center">
+[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span><br/>Télécharger les données](data/Tramway.zip)</p>
+
+```{r,results=FALSE}
+tramway <- st_read("data/MMM_MMM_LigneTram.shp")
+tramway <- st_transform(tramway, 4326)
+```
+
 ```{r}
 leafMap <- leaflet(data = iso_gareStRoch) %>%
   setView(lat = 43.604937, lng = 3.880727, zoom = 10) %>%
@@ -752,13 +771,25 @@ leafMap <- leaflet(data = iso_gareStRoch) %>%
               color = ~mycol_2(minutes),
               smoothFactor = 0.2,
               fillOpacity = 1) %>%
-  addProviderTiles(providers$CartoDB.Positron) 
+  addProviderTiles(providers$CartoDB.Positron)
+
+leafMap <- leafMap %>%
+  addPolylines(data = tramway,
+               opacity = 1,
+               weight = 4,
+               color = ~factor(num_exploi, levels = c(1, 2, 3, 4), labels = c("blue", "#c51b8a", "green", "brown")))
 
 leafMap
 ```
 
 
 Nous allons également ajouter une légende afin de faciliter la lecture de la carte.
+
+```{r}
+mycol_3 <- colorFactor(
+  palette = c("blue", "#c51b8a", "darkgreen", "brown"),
+  domain = tramway$num_exploi)
+```
 
 ```{r}
 leafMap <- leaflet(data = iso_gareStRoch) %>%
@@ -773,6 +804,17 @@ leafMap <- leaflet(data = iso_gareStRoch) %>%
     title = "Temps d'accès",
     labFormat = labelFormat(suffix = " min"),
     opacity = 1)
+
+leafMap <- leafMap %>%
+  addPolylines(data = tramway,
+               opacity = 1,
+               weight = 4,
+               color = ~factor(num_exploi, levels = c(1, 2, 3, 4), labels = c("blue", "#c51b8a", "darkgreen", "brown"))
+               ) %>%
+  addLegend("bottomleft", pal = mycol_3,
+            values = tramway$num_exploi,
+            title = "Lignes de tramway",
+            opacity = 1)
 
 leafMap
 ```
@@ -798,7 +840,7 @@ iso_gareStRoch_velo$minutes = iso_gareStRoch_velo$time / 60
 Pour distinguer les deux modes de déplacement sur la carte, nous construisons une progression chromatique en teintes bleues :
 
 ```{r}
-mycol_3 <- colorFactor(
+mycol_4 <- colorFactor(
   palette = 'Blues',
   domain = iso_gareStRoch_velo$minutes)
 ```
@@ -810,7 +852,7 @@ leafMap <- leaflet() %>%
   setView(lat = 43.604937, lng = 3.880727, zoom = 10) %>%
     addPolygons(data = iso_gareStRoch_velo,
               stroke = FALSE,
-              color = ~mycol_3(minutes),
+              color = ~mycol_4(minutes),
               smoothFactor = 0.2,
               fillOpacity = 1, 
               group = "VELO") %>%
@@ -822,8 +864,15 @@ leafMap <- leaflet() %>%
               group = "TRANSIT") %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addLayersControl(
-    overlayGroups = c("TRANSIT", "VELO"),
+    overlayGroups = c("TRANSIT", "VELO", "TRAMWAY"),
     options = layersControlOptions(collapsed = FALSE))
+
+leafMap <- leafMap %>%
+  addPolylines(data = tramway,
+               opacity = 1,
+               weight = 4,
+               group = "TRAMWAY",
+               color = ~factor(num_exploi, levels = c(1, 2, 3, 4), labels = c("blue", "#c51b8a", "green", "brown")))
 
 leafMap
 ``` 
@@ -835,7 +884,7 @@ leafMap <- leaflet() %>%
   setView(lat = 43.604937, lng = 3.880727, zoom = 10) %>%
   addPolygons(data = iso_gareStRoch_velo,
               stroke = FALSE,
-              color = ~mycol_3(minutes),
+              color = ~mycol_4(minutes),
               smoothFactor = 0.2,
               fillOpacity = 1, 
               group = "VELO") %>%
@@ -847,7 +896,7 @@ leafMap <- leaflet() %>%
               group = "TRANSIT") %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addLayersControl(
-    overlayGroups = c("TRANSIT", "VELO"),
+    overlayGroups = c("TRANSIT", "VELO", "TRAMWAY"),
     options = layersControlOptions(collapsed = FALSE)
   ) %>%
   addLegend("bottomright", pal = mycol_2, 
@@ -857,13 +906,26 @@ leafMap <- leaflet() %>%
             opacity = 1,
        group = "TRANSIT"
   ) %>%
-  addLegend("bottomleft", pal = mycol_3, 
+  addLegend("bottomleft", pal = mycol_4, 
             values = iso_gareStRoch_velo$minutes,
     title = "Temps d'accès (vélo)",
     labFormat = labelFormat(suffix = " min"),
     opacity = 1,
     group = "VELO")
 
+leafMap <- leafMap %>%
+  addPolylines(data = tramway,
+               opacity = 1,
+               weight = 4,
+               group = "TRAMWAY",
+               color = ~factor(num_exploi, levels = c(1, 2, 3, 4), labels = c("blue", "#c51b8a", "darkgreen", "brown"))
+               ) %>%
+  addLegend("bottomleft", pal = mycol_3,
+            values = tramway$num_exploi,
+            title = "Lignes de tramway",
+            opacity = 1,
+            group = "TRAMWAY")
+  
 leafMap
 ```
 
@@ -871,7 +933,7 @@ leafMap
 
 L'analyse proposée ici vise à qualifier l'offre de transport en commun entre une ou plusieurs origine(s) en direction d'une destination à partir de la mesure du nombre de déplacements réalisables et de leurs durées. Cette analyse d'accessibilité sous contrainte horaire s'inscrit dans le cadre théorique et méthodologique de la *Time-Geography* (par exemple : @Chapelon2016 ; @Conesa2012 ; @LHostis2004 ; ...).
 
-À titre d'exemple, nous développons un programme permettant de compter tous les déplacements possibles via le réseau de la TAM à partir des 30 mairies de la métropole (hors Montpellier) pour une arrivée entre 7h et 9h à la Gare Saint-Roch. L'objectif est d'évaluer la qualité de l'offre de transport théorique à l'heure de pointe du matin (les retards potentiels liés aux accidents de circulation, aux travaux, etc. ne sont pas pris en compte). 
+À titre d'exemple, nous développons un programme permettant de compter tous les déplacements possibles via le réseau de la TAM à partir des 30 mairies de la métropole (hors Montpellier) pour une arrivée entre 7h et 9h à la Gare Saint-Roch. L'objectif est d'évaluer la qualité de l'offre de transport théorique à l'heure de pointe du matin à partir des centres-villes des communes métropolitaines (les retards potentiels liés aux accidents de circulation, aux travaux, etc. ne sont pas pris en compte). 
 
 ### Préparation des données
 
@@ -1012,6 +1074,24 @@ La fonction `mf_map()` de la bibliothèque `mapsf` est la fonction centrale du p
 
 - `type` le type de carte que l’on souhaite créer (`prop` pour des symboles proportionnels, `choro` pour une carte choroplèthe, `typo` pour une palette de couleurs variées, `symb` pour des symboles ponctuels différenciés,...). Puisque nous souhaitons représenter conjointement une variable quantitative de stock et des intervalles de temps de déplacement, nous choisissons le type `prop_choro` qui permet de varier la taille des figurés et leur intensité chromatique de façon synchrone.
 
+Nous ajontons le nombre d'habitants pour chaque commune (INSEE RP2020) et calculons la densité de population. La surface de chaque polygone est calculée avec `st_area` avec l'unité m2 par défaut. Nous utilisons la bibliothèque `units` pour convertir automatiquement les surfaces de chaque commune de m$^2$ à km$^2$ avec `set_units`. L'expression `attributes() = NULL` permet ensuite de supprimer les unités de la colonne car elles peuvent causer des problèmes lors des rendus graphiques (comme `ggplot2`).
+
+```{r}
+library(units)
+
+epci_3m$popu <- c("9305", "6794", "2176", "23469", "4014", "1640", "5613", "2839", "6423", "9438", "6490", "3293", "7194", "8218", "12104", "2818", "3517", "7600", "2183", "1039", "299096", "6007", "5628", "11843", "10463", "8885", "17674", "6771", "2041", "1856", "3330")
+
+epci_3m$popu <- as.numeric(epci_3m$popu)
+
+epci_3m$surface_km2 <- st_area(epci_3m)
+
+epci_3m$surface_km2 <- set_units(epci_3m$surface_km2, km^2)
+
+epci_3m$densite <- epci_3m$popu/epci_3m$surface_km2
+
+attributes(epci_3m$densite) = NULL
+```
+
 Notons que la cartographie paginée nécessite d'utiliser des coordonnées définies dans un système de projection cartographique adapté au territoire à l'étude, ici nous utiliserons le Lambert93 (code EPSG 2154).
 
 ```{r}
@@ -1027,7 +1107,16 @@ library(mapsf)
 
 mf_init(x = tableau_resultat, theme = "iceberg", expandBB = c(0.3, 0.3, 0.3, 0.3))
 
-mf_map(epci_3m, add = TRUE)
+mf_map(epci_3m,
+       add = TRUE,
+       type = "choro",
+       var = "densite",
+       breaks = "geom",
+       nbreaks = 5,
+       pal = "Reds",
+       leg_pos = "left",
+       leg_title = "Densité de population\n(habitants par km²)",
+       leg_frame = TRUE)
 
 mf_map(tableau_resultat,
        type = "prop_choro",
@@ -1035,8 +1124,8 @@ mf_map(tableau_resultat,
        inches = 0.15,
        border = "grey50",
        lwd = 1,
-       leg_pos = c("left", "right"),
-       leg_title = c("Nombre", "Temps\nmoyen\n(en min)"),
+       leg_pos = c("right"),
+       leg_title = c("Nombre", "Temps moyen\n(en min)"),
        breaks = "equal",
        nbreaks = 9,
        pal = "Greens",
@@ -1055,7 +1144,7 @@ mf_label(gare_st_Roch,
          cex = 1,
          bg = "white",
          pos = c(4, 1),
-         r = 0.07)
+         r = 0.05)
 
 mf_layout(
   title = "Déplacements des 30 mairies vers la gare Saint-Roch (7h-9h)",
@@ -1067,23 +1156,61 @@ mf_layout(
   frame = TRUE)
 ```
 
+Il est possible d'évaluer la performance de l'offre de transport par rapport à la distance euclidienne qui sépare les mairies à la gare Saint-Roch. Nous pouvons calculer cette distance avec l'expression `st_distance` de la bibliothèque `sf`. Nous ajoutons ensuite les `distances` dans notre `tableau_resultat`.
+
+```{r}
+distances <- st_distance(tableau_resultat$geometry, gare_st_Roch$geometry)
+
+tableau_resultat$distance_euclidienne <- distances
+```
+
+Afin de faciliter la lecture des résultats, il nous faudra les codes INSEE de chacune des mairies. Les codes INSEE sont enregistrés dans le tableau `mairies` avec les coordonnées géographiques identiques à `tableau_resultat`. Nous réaliserons une jointure spatiale pour joindre toutes les colonnes des deux tableurs. Nous donnerons une valeur de `0.1` à `st_precision` afin de faire correspondre les coordonnées géographiques des deux tableurs en raison de très légères différences (aussi petites soient-elles) dûes à des manipulations antérieures. La jointure spatiale est réalisée par l'expression `st_join`.
+
+```{r}
+mairies <- st_transform(mairies, 2154)
+
+st_precision(mairies) <- 0.1
+
+st_precision(tableau_resultat) <- 0.1
+
+jointure_spatiale <- st_join(tableau_resultat, mairies)
+```
+
+La conversion de mètre à kilomètre est réalisée par `set_units` puis nous supprimerons l'unité avec `attributes() = NULL` car elle empêche la création du nuage de points dans `ggplot2`.
+
+```{r}
+jointure_spatiale$distance_euclidienne <- set_units(jointure_spatiale$distance_euclidienne, km)
+
+attributes(jointure_spatiale$distance_euclidienne) = NULL
+```
+
+Nous ponvons enfin réaliser le nuage de points afin de constater la performance, pour chaque mairie, de l'offre de transport par rapport à la distance qui la sépare de la gare. Nous utilisons la bibliothèque `ggrepel` pour que les étiquettes s'affichent avec plus de lisibilité, grâce à l'expression `geom_text_repel` qui empêche leur chevauchement.
+
+```{r}
+library(ggrepel)
+
+dist <- ggplot(jointure_spatiale, aes(x = distance_euclidienne, y = duree_moy, label = DEPCOM)) + 
+  geom_point() +
+  geom_text_repel(size = 3, box.padding = 0.3) +
+  xlab("Distance euclidienne (km)") +
+  ylab("Durée moyenne des déplacements (min)") +
+  labs(subtitle ="Performance des transports collectifs par rapport à la distance")
+
+dist
+```
+
+Le graphique permet de constater qu'il y a globalement bien une relation entre la distance et la durée moyenne des déplacements (plus c'est loin, plus il faudra de temps). Toutefois, des différences importantes de temps de déplacement, à distance égale, existent : la mairie du Crès (34090) est presque aussi éloignée que celle de Pérols (34198) alors qu'un écart de 25 minutes de déplacement les différencie (Pérols possède une desserte en tramway contrairement au Crès). 
+
 N'oubliez pas d'arrêter le serveur OTP une fois vos analyses terminées, comme il en est le cas pour ce tutoriel !
 
 ```{r, results = "hide"}
 otp_stop()
 ```
 
-# Conclusion
+# Conclusion et perspectives
 
 L'outil OTP et son intégration dans R permettent donc de mobiliser facilement les nouvelles données de l'offre de transport et de calcul d'itinéraires multimodaux pour porter un regard affiné sur l'accessibilité territoriale, à l'aide d'indicateurs d'analyses éprouvés en géographie et en aménagement : matrices O/D, isochrones de distance, nombre de déplacements possibles sous contrainte horaire, etc.
-
-
-# Perspectives
-
 De nombreuses perspectives sont ouvertes à l'issue de ce travail, telles que l'ajout d'autres opérateurs de transport collectif pour compléter l'offre de la TAM ou encore l'addition d'un modèle numérique de terrain afin de tenir compte de la pénibilité induite par certaines pentes dans le cas des déplacements à vélo.
-
-
-
 
 # Bibliographie {-}
 
