@@ -516,7 +516,7 @@ datatable(route)
 
 Le déplacement proposé est composé de trois étapes (*legs*), chacune étant caractérisée par un mode de transport, recensés dans l'ordre du cheminement. La somme de leurs distances et de leurs durées correspond ainsi à la distance (en mètres) et à la durée (en secondes) du déplacement total :
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 sum(route$leg_distance)
 
 sum(route$leg_duration)
