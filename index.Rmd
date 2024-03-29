@@ -177,7 +177,7 @@ Le format des données ainsi téléchargées (*Protocolbuffer Binary Format*) es
 Par curiosité (mais cela n'est pas une étape nécessaire pour la mise en oeuvre de la chaîne de traitements), on peut importer les couches d'information géographique souhaitées une à une ou de façon groupée via la fonction `st_read()`, en spécifiant la couche (organisée par type de géométrie) et en créant une requête sur les attributs, par exemple en sélectionnant les routes (*key = highway*) dans la couche.
 
 ```{r, eval = FALSE}
-osm_highways <- sf::read_sf("geofabrik_languedoc-roussillon-latest.osm.pbf", layer = "lines", query = "select highway from lines")
+osm_highways <- sf::read_sf("geofabrik_languedoc-roussillon-latest.osm.pbf", query = "select highway from lines")
 ```
 
 ### Utilisation des tags OSM pour les itinéraires routiers
@@ -289,7 +289,7 @@ Une fois le graphe construit, il est recommandé de passer la ligne en commentai
 
 Nous pouvons résumer l'organisation du dossier OTP avec ce schéma :
 ```{r, echo = FALSE, out.width = "50%",  fig.align = 'center'}
-knitr::include_graphics("figures/schema_OTP.png")
+knitr::include_graphics("figures/schema_otp.png")
 ```
 
 Un fichier `router-config.json`, facultatif pour démarrer une session OTP, pourra être ajouté dans un second temps pour modifier des paramètres de déplacement (voir partie 4.5). Le fichier `Graph.obj` est lui, par contre, indispensable pour démarrer une cession OTP. Il sera créé dans l'environnement R.
@@ -516,7 +516,7 @@ datatable(route)
 
 Le déplacement proposé est composé de trois étapes (*legs*), chacune étant caractérisée par un mode de transport, recensés dans l'ordre du cheminement. La somme de leurs distances et de leurs durées correspond ainsi à la distance (en mètres) et à la durée (en secondes) du déplacement total :
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 sum(route$leg_distance)
 
 sum(route$leg_duration)
