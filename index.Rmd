@@ -289,7 +289,7 @@ Une fois le graphe construit, il est recommandé de passer la ligne en commentai
 
 Nous pouvons résumer l'organisation du dossier OTP avec ce schéma :
 ```{r, echo = FALSE, out.width = "50%",  fig.align = 'center'}
-knitr::include_graphics("figures/schema_OTP.png")
+knitr::include_graphics("figures/schema_otp.png")
 ```
 
 Un fichier `router-config.json`, facultatif pour démarrer une session OTP, pourra être ajouté dans un second temps pour modifier des paramètres de déplacement (voir partie 4.5). Le fichier `Graph.obj` est lui, par contre, indispensable pour démarrer une cession OTP. Il sera créé dans l'environnement R.
