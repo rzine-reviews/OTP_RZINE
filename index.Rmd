@@ -177,7 +177,7 @@ Le format des données ainsi téléchargées (*Protocolbuffer Binary Format*) es
 Par curiosité (mais cela n'est pas une étape nécessaire pour la mise en oeuvre de la chaîne de traitements), on peut importer les couches d'information géographique souhaitées une à une ou de façon groupée via la fonction `st_read()`, en spécifiant la couche (organisée par type de géométrie) et en créant une requête sur les attributs, par exemple en sélectionnant les routes (*key = highway*) dans la couche.
 
 ```{r, eval = FALSE}
-osm_highways <- sf::read_sf("geofabrik_languedoc-roussillon-latest.osm.pbf", layer = "lines", query = "select highway from lines")
+osm_highways <- sf::read_sf("geofabrik_languedoc-roussillon-latest.osm.pbf", query = "select highway from lines")
 ```
 
 ### Utilisation des tags OSM pour les itinéraires routiers
