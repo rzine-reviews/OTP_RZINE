@@ -3,9 +3,9 @@ title: "Analyse d’accessibilité multimodale"
 subtitle: "Avec R et OpenTripPlanner"
 date: "`r Sys.Date()`"
 author: 
- - name: "[Marion Le Texier](https://www.researchgate.net/profile/Marion-Le-Texier)"
-   affiliation: LAGAM, Université Paul Valéry Montpellier 3
  - name: "[Jean-Clément Ullès](https://lagam.xyz/2022/09/20/3764/)"
+   affiliation: LAGAM, Université Paul Valéry Montpellier 3
+ - name: "[Marion Le Texier](https://www.researchgate.net/profile/Marion-Le-Texier)"
    affiliation: LAGAM, Université Paul Valéry Montpellier 3
 image: "featured.png"   
 logo: "figures/rzine.png"  
@@ -1232,7 +1232,7 @@ rref <- bibentry(
    bibtype = "misc",
    title = "Analyse d’accessibilité multimodale",
    subtitle = "Avec R et OpenTripPlanner",
-   author = c("Marion Le Texier", "Jean-Clément Ullès"),
+   author = c("Jean-Clément Ullès", "Marion Le Texier"),
    doi = "10.48645/xxxxxx",
    url = "https://rzine.fr/publication_rzine/xxxxxxx/",
    keywords ="FOS: Other social sciences",
