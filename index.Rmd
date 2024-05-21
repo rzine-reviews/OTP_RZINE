@@ -60,7 +60,7 @@ L'accessibilité est un concept utilisé en géographie pour qualifier "la plus 
 
 [OpenTripPlanner](http://www.opentripplanner.org/) est un logiciel libre développé en Java permettant de créer et d'interroger un planificateur d'itinéraire multimodal personnalisé. Créé en 2009 pour TriMet, l'agence de transport en commun de Portland (Oregon), par l'équipe d'informaticiens du consultant Conveyal, OTP s'est ensuite développé, et englobe aujourd'hui une communauté mondiale d'utilisateurs et de développeurs.
 
-L'analyse de l'accessibilité par des réseaux de transport multimodaux, opérant à différentes échelles et gérés par des autorités organisatrices variées, marque une étape importante dans le champ de la géographie des transports. Les déplacements optimaux déterminés par OTP correspondent au plus court chemin, c'est-à-dire à la minimisation du temps de déplacement pour l'usager (algorithmes de Dijkstra (@Dijkstra), A\* (@Hart1968) et assimilés). L'intermodalité (combinaison de plusieurs modes et réseaux de transport) et l'intramodalité (combinaison de plusieurs véhicules au sein d'un même réseau de transport) sont également intégrées dans OTP, avec la gestion optimale des correspondances (minimisation du temps de marche entre deux arrêts et du temps d'attente). OTP se prête donc aux analyses territoriales de l'accessibilité, en simulant les meilleurs déplacements possibles pour l'usager en fonction des différents modes de transport à sa disposition pour un horaire donné.
+L'analyse de l'accessibilité par des réseaux de transport multimodaux, opérant à différentes échelles et gérés par des autorités organisatrices variées, marque une étape importante dans le champ de la géographie des transports. Les déplacements optimaux déterminés par OTP correspondent au plus court chemin, c'est-à-dire à la minimisation du temps de déplacement pour l'usager? Ces temps sont calculés en utilisant les algorithmes de Dijkstra [@Dijkstra], A\* [@Hart1968] et assimilés. L'intermodalité (combinaison de plusieurs modes et réseaux de transport) et l'intramodalité (combinaison de plusieurs véhicules au sein d'un même réseau de transport) sont également intégrées dans OTP, avec la gestion optimale des correspondances (minimisation du temps de marche entre deux arrêts et du temps d'attente). OTP se prête donc aux analyses territoriales de l'accessibilité, en simulant les meilleurs déplacements possibles pour l'usager en fonction des différents modes de transport à sa disposition pour un horaire donné.
 
 Brièvement, OTP construit un graphe décrivant les itinéraires reliant l'ensemble des localisations d'un territoire donné, en transport en commun comme par la route, à partir de données GTFS (*General Transit Feed Specification*) pour le réseau de transport en commun (bus, métros, tramways, trains) et de données *OpenStreetMap* pour les modes de transport individuels qui utilisent le réseau viaire (voiture, vélo, piéton). Le logiciel dépend donc de données ouvertes renseignées dans des formats de fichier standards. Sur ce point, rappelons que les autorités organisatrices de la mobilité (AOM) ont l'obligation de transmettre leurs données de l'offre de transport (règlement européen 2017/1926, art. 25 de la LOM de 2019) sur le point d'accès national [(PAN)](https://transport.data.gouv.fr/).
 
@@ -91,31 +91,31 @@ L'offre de transport théorique dans un territoire peut être étudiée à parti
 
 Deux formats de données statiques sont privilégiés :
 
--   NeTEx (*Network Timetable Exchange*), répondant aux critères établis par le Comité européen de normalisation en électronique et en électrotechnique ;
+-   NeTEx (*Network Timetable Exchange*), répondant aux critères établis par le Comité européen de normalisation en électronique et en électrotechnique
 
 -   GTFS (*General Transit Feed Specification*), répondant aux critères spécifiques des flux Google Transports en commun public. Les données doivent être validées par le [validateur GTFS de Google](https://github.com/mobilitydata/gtfs-validator).
 
 ### Exemple des données de Montpellier 3M
 
-Nous utiliserons dans ce tutoriel le cas de la métropole de Montpellier. La métropole est constituée de 31 communes comptant 499 761 habitants en 2020 (INSEE RP2020). Elle détient la compétence d'autorité organisatrice des mobilités (AOM) sur son ressort territorial et opère 4 lignes de tramway et 41 lignes de bus. Cet exemple servira d'illustration des méthodes présentées dans cette fiche afin de disposer d'un cas d'étude simplifié, mais d'autres échelles territoriales sont bien sûr possibles en ajoutant les données de l'offre en adéquation avec l'échelle d'analyse (offre régionale, ferroviaire, autres AOM locales, etc.). Les données renseignant l'offre de transport théorique de TAM (Transports de l'agglomération de Montpellier) sont fournies au format GTFS depuis le point d'accès national aux données de transport à [cette adresse](https://transport.data.gouv.fr/datasets/offre-de-transport-de-montpellier-mediterranee-metropole-tam-gtfs), et peuvent être converties au format GeoJSON et au format NeTEx directement depuis le site de téléchargement.
+Nous utiliserons dans ce tutoriel le cas de la métropole de Montpellier. La métropole est constituée de 31 communes comptant 499 761 habitants en 2020 (INSEE RP2020). Elle détient la compétence d'autorité organisatrice des mobilités (AOM) sur son ressort territorial et opère 4 lignes de tramway et 41 lignes de bus. Cet exemple servira d'illustration des méthodes présentées dans cette fiche afin de disposer d'un cas d'étude simplifié, mais d'autres échelles territoriales sont bien sûr possibles en ajoutant les données de l'offre en adéquation avec l'échelle d'analyse (offre régionale, ferroviaire, autres AOM locales, etc.). Les données renseignant l'offre de transport théorique de TAM (Transports de l'agglomération de Montpellier) sont fournies au format GTFS [depuis le point d'accès national aux données de transport](https://transport.data.gouv.fr/datasets/offre-de-transport-de-montpellier-mediterranee-metropole-tam-gtfs), et peuvent être converties au format GeoJSON et au format NeTEx directement depuis le site de téléchargement.
 
 L'extraction des données utilisées pour ce tutoriel a été réalisée le 27 mars 2023. Elles décrivent l'offre de transport de façon statique pour la période s'écoulant du 16 mars 2023 au 14 mai 2023. Les données utilisées pour ce tutoriel ont été actualisées pour la dernière fois à la date du 25 mars 2023.
 
 Le dossier contient différents fichiers au format texte, renseignant chacun une partie du système de transport sous la forme d'un tableau de données utilisant des virgules comme séparateurs de colonnes :
 
--   **agency** : le fichier contient des informations sur les compagnies (*agences*) de transport en commun opérant sur le réseau étudié (ex : identifiant, nom, site web, téléphone, fuseau horaire,...) ;
+-   **agency** : le fichier contient des informations sur les compagnies (*agences*) de transport en commun opérant sur le réseau étudié (ex : identifiant, nom, site Web, téléphone, fuseau horaire...) 
 
--   **routes** : le fichier catalogue les lignes du réseau de transport, qu'il décrit par le biais d'identifiants et de noms courts ou longs, par type de transport, par mode de ramassage et de descente, et d'autres informations plus ou moins formalisées. Une couleur peut être associée à une route afin d'en faciliter le repérage par les utilisateurs ;
+-   **routes** : le fichier catalogue les lignes du réseau de transport, qu'il décrit par le biais d'identifiants et de noms courts ou longs, par type de transport, par mode de ramassage et de descente, et d'autres informations plus ou moins formalisées. Une couleur peut être associée à une route afin d'en faciliter le repérage par les utilisateurs 
 
--   **trips** : le fichier décrit les itinéraires réalisés sur les routes (*lignes*), notamment par le biais d'informations sur les sens de déplacement et les dates de service (*blocks*). Plusieurs *trips* peuvent donc avoir lieu sur une même *route* ;
+-   **trips** : le fichier décrit les itinéraires réalisés sur les routes (*lignes*), notamment par le biais d'informations sur les sens de déplacement et les dates de service (*blocks*). Plusieurs *trips* peuvent donc avoir lieu sur une même *route* 
 
--   **stops** : le fichier identifie, nomme, géolocalise (coordonnées lat/long) et caractérise (ex : type d'arrêt, identifiant de l'emplacement parent, accessibilité aux personnes en fauteuil roulant,...) les arrêts du réseau ;
+-   **stops** : le fichier identifie, nomme, géolocalise (coordonnées lat/long) et caractérise (ex : type d'arrêt, identifiant de l'emplacement parent, accessibilité aux personnes en fauteuil roulant...) les arrêts du réseau 
 
--   **stop_times** : le fichier renseigne, pour chaque itinéraire (*trip*) concerné, les heures de passage (arrivée et départ) à l'arrêt. Des informations sur les modes de rammassage/descente, l'affichage sur les panneaux et d'autres caractéristiques des arrêts sont proposées. L'ordonnancement des passages aux arrêts pour un itinéraire particulier est également consigné ;
+-   **stop_times** : le fichier renseigne, pour chaque itinéraire (*trip*) concerné, les heures de passage (arrivée et départ) à l'arrêt. Des informations sur les modes de rammassage/descente, l'affichage sur les panneaux et d'autres caractéristiques des arrêts sont proposées. L'ordonnancement des passages aux arrêts pour un itinéraire particulier est également consigné 
 
--   **transfers** : le fichier est optionnel. Il permet de spécifier les règles de transit entre deux arrêts, en termes d'éloignement géographique et de durée de déplacement à pied, ou, comme il en est le cas avec les données de la TAM, sous la forme d'une variable catégorielle qui renseigne sur la possiblité de réaliser un transfert entre deux arrêts (transfert recommandé, programmé, possible sous contrainte de temps ou impossible) ;
+-   **transfers** : le fichier est optionnel. Il permet de spécifier les règles de transit entre deux arrêts, en termes d'éloignement géographique et de durée de déplacement à pied, ou, comme avec les données de la TAM, sous la forme d'une variable catégorielle qui renseigne sur la possiblité de réaliser un transfert entre deux arrêts (transfert recommandé, programmé, possible sous contrainte de temps ou impossible) 
 
--   **calendar** : le fichier recense les dates pour lesquelles un service est fonctionnel : une date de début et une date de fin indiquent la plage de dates d'activité du service, et, pour chaque jour de la semaine (lundi à dimanche), une variable renseigne sur la disponibilité (ou l'indisponibilité) du service pour l'ensemble des lundis (resp. mardis, mercredis, jeudis, vendredis, samedis et dimanches) de la plage ;
+-   **calendar** : le fichier recense les dates pour lesquelles un service est fonctionnel : une date de début et une date de fin indiquent la plage de dates d'activité du service, et, pour chaque jour de la semaine (lundi à dimanche), une variable renseigne sur la disponibilité (ou l'indisponibilité) du service pour l'ensemble des lundis (resp. mardis, mercredis, jeudis, vendredis, samedis et dimanches) de la plage 
 
 -   **calendar_dates** : le fichier renseigne sur les exceptions au service régulier consigné dans le fichier *calendar*. Il peut par exemple servir à indiquer les changements d'activité du service (ajout ou suppression) du fait d'un événement particulier, ou pour s'adapter à un calendrier scolaire.
 
@@ -129,7 +129,7 @@ knitr::include_graphics("figures/gtfs_wiki.png")
 
 L'utilisation du réseau viaire (routes, chemins) est indispensable pour calculer les itinéraires des modes individuels (voiture, piéton et cycliste) et des modes collectifs (pré et post-acheminement, gestion des correspondances). Pour cela, nous utiliserons les données issues du projet de cartographie collaborative *OpenStreetMap* (OSM).
 
-La complétude et la précision des données varient d'un territoire, d'une échelle géographique et d'une temporalité à l'autre ; à ce propos, on lira par exemple @Herfort2022. Il faut donc être vigilant à cet aspect en amont de leur utilisation dans le cadre d'une analyse d'accessibilité qui utilise le réseau viaire. En France, la plateforme recense l'ensemble des données géographiques publiques en Open Data en complément de l'information géographique volontaire. Une présentation des données OSM est par exemple proposée par @Mericskay2017.
+La complétude et la précision des données varient d'un territoire, d'une échelle géographique et d'une temporalité à l'autre [@Herfort2022]. Il faut donc être vigilant à cet aspect en amont de leur utilisation dans le cadre d'une analyse d'accessibilité qui utilise le réseau viaire. En France, la plateforme recense l'ensemble des données géographiques publiques en *open data* en complément de l'information géographique volontaire. Une présentation des données OSM est par exemple proposée par @Mericskay2017.
 
 
 ### Téléchargement des données depuis la Geofabrik
@@ -142,7 +142,7 @@ La bibliothèque `osmextract` permet de télécharger et d'importer facilement d
 library(osmextract)
 ```
 
-Nous allons utiliser le fichier décrivant les limites de la métropole de Montpellier 3M afin de créer un filtre spatial lors du téléchargement des données OSM depuis la Geofabrik. Pour cela, nous l'importons dans le projet en cours via la fonction `st_read()` de la bibliothèque `sf`.
+Nous allons utiliser le fichier décrivant les limites de la métropole de Montpellier Méditerranée afin de créer un filtre spatial lors du téléchargement des données OSM depuis la Geofabrik. Pour cela, nous l'importons dans le projet en cours via la fonction `st_read()` de la bibliothèque `sf`.
 
 Le fichier GeoJSON décrivant le territoire de la métropole de Montpellier est disponible ici :
 
@@ -154,7 +154,7 @@ library(sf)
 epci_3m <- st_read("data/EPCI_MONTPELLIER.geojson")
 ```
 
-La fonction `oe_get()` de la bibliothèque `osmextract` permet d'associer par le biais d'une relation d'appartenance géographique un lieu d'entrée (option `place`) avec l'URL du fichier .osm.pbf correspondant (dans le cas de la métropole de Montpellier, il s'agit de l'ancienne région Languedoc Roussillon), qu'elle enregistre dans une liste puis télécharge. Le paramètre `boundary` permet d'associer un filtre spatial à la requête, et de ne télécharger que les objets contenus dans les limites géographiques désignées (et renseignées au format sf/sfc/bbox). Notons que la fonction appelle en interne la fonction `oe_vectortranslate()` qui traduit le fichier osm.pbf en fichier *geopackage* (.gpkg) avant de le lire. Le filtre spatial ne s'applique que sur le fichier .gpkg qu'elle télécharge, et pas sur le fichier .osm.pbf étant lui aussi téléchargé. Des options d'enregistrement du fichier peuvent être ajoutées, par exemple afin de forcer la mise à jour si le fichier a été téléchargé auparavant (paramètre `force_download`) ou pour indiquer le chemin d'accès du répertoire dans lequel enregistrer le fichier (paramètre `download_directory`) en remplacement de la valeur par défaut (répertoire temporaire).
+La fonction `oe_get()` de la bibliothèque `osmextract` permet d'associer par le biais d'une relation d'appartenance géographique un lieu d'entrée (option `place`) avec l'URL du fichier .osm.pbf correspondant (dans le cas de la métropole de Montpellier, il s'agit de l'ancienne région Languedoc-Roussillon), qu'elle enregistre dans une liste puis télécharge. Le paramètre `boundary` permet d'associer un filtre spatial à la requête, et de ne télécharger que les objets contenus dans les limites géographiques désignées (et renseignées au format sf/sfc/bbox). Notons que la fonction appelle en interne la fonction `oe_vectortranslate()` qui converti le fichier .osm.pbf en fichier *geopackage* (.gpkg) avant de le lire. Le filtre spatial ne s'applique que sur le fichier .gpkg qu'elle télécharge, et pas sur le fichier .osm.pbf étant lui aussi téléchargé. Des options d'enregistrement du fichier peuvent être ajoutées, par exemple afin de forcer la mise à jour si le fichier a été téléchargé auparavant (paramètre `force_download`) ou pour indiquer le chemin d'accès du répertoire dans lequel enregistrer le fichier (paramètre `download_directory`) en remplacement de la valeur par défaut (répertoire temporaire).
 
 ```{r, eval = FALSE}
 
@@ -170,23 +170,24 @@ osm_3m <- oe_get(place = contours_3m,
 
 Notons qu'il est possible d'extraire les données OSM au format .pbf depuis une source externe, comme le propose le [site BBBike extract](https://extract.bbbike.org/) par exemple. Le site permet notamment de définir un cadre de délimitation (*bounding box*) pour les informations spatiales à télécharger, ce qui réduira a posteriori la taille du graphe construit pour lancer les requêtes OTP.
 
-### Description des données osm.pbf
+### Description des données .osm.pbf
 
 Le format des données ainsi téléchargées (*Protocolbuffer Binary Format*) est spécifique au projet *OpenStreetMap*, mais utilise le format de sérialisation de Google pour produire un fichier au format binaire. Il permet de regrouper des informations multiples (entités, objets, tuiles) de façon indépendante.
 
 Par curiosité (mais cela n'est pas une étape nécessaire pour la mise en oeuvre de la chaîne de traitements), on peut importer les couches d'information géographique souhaitées une à une ou de façon groupée via la fonction `st_read()`, en spécifiant la couche (organisée par type de géométrie) et en créant une requête sur les attributs, par exemple en sélectionnant les routes (*key = highway*) dans la couche.
 
 ```{r, eval = FALSE}
-osm_highways <- sf::read_sf("geofabrik_languedoc-roussillon-latest.osm.pbf", query = "select highway from lines")
+osm_highways <- sf::read_sf("geofabrik_languedoc-roussillon-latest.osm.pbf", 
+                            query = "select highway from lines")
 ```
 
 ### Utilisation des tags OSM pour les itinéraires routiers
 
 OTP permet de définir un ensemble de critères pour décider quand une rue est autorisée aux piétons, aux vélos ou aux voitures. Par défaut, OTP utilise les tags OSM et considère que :
 
-- les mobilités piétonnes et cyclables ne sont pas autorisées sur les routes décrites comme `highway=trunk`, `highway=trunk_link`, `highway=motorway`, `highway=motorway_link`, ou `highway=construction`.
+- les mobilités piétonnes et cyclables ne sont pas autorisées sur les routes décrites comme `highway=trunk`, `highway=trunk_link`, `highway=motorway`, `highway=motorway_link`, ou `highway=construction`
 
-- les mobilités piétonnes et cyclables sont toutes les deux autorisées sur les routes décrites comme `highway=pedestrian`, `highway=cycleway`, et `highway=footway`.
+- les mobilités piétonnes et cyclables sont toutes les deux autorisées sur les routes décrites comme `highway=pedestrian`, `highway=cycleway`, et `highway=footway`
 
 - les vélos ne sont pas autorisés sur les routes de type `highway=footway` lorsque lui sont associées les étiquettes suivantes : `footway=sidewalk`, `public_transport=platform`, ou `railway=platform`.
 
@@ -196,13 +197,13 @@ Depuis la version 2 d'OTP, le logiciel permet de définir des niveaux de sécuri
 
 Si un arrêt de transport, localisé par le GTFS, se trouve dans un bâtiment, il est nécessaire d’être vigilant à sa connexion au graphe OpenStreetMap, sans quoi l’isolement de l’arrêt rendra impossible les parcours à pied (impossibilité de créer les pré- et post-acheminements ainsi que les correspondances à pied entre deux arrêts).
 
-Par exemple, les cheminements piétons dans les gares ne sont pas systématiquement renseignés dans OpenStreetMap, ni les escaliers ou ascenseurs permettant de changer de quai. D’expérience, les gares les plus importantes sont correctement géoréférencées mais toutes ne le sont pas. Un arrêt isolé du graphe piéton ne permet pas au logiciel de comprendre qu’il peut entrer et sortir de la gare, ou réaliser une correspondance entre un TGV et un TER dans la même gare s’il doit se déplacer dans celle-ci, faute d’un graphe piéton disponible.
+Par exemple, les cheminements piétons dans les gares ne sont pas systématiquement renseignés dans OpenStreetMap, ni les escaliers ou ascenseurs permettant de changer de quai. D’expérience, les gares les plus importantes sont correctement géoréférencées mais toutes ne le sont pas. Un arrêt isolé du graphe piéton ne permet pas au logiciel de comprendre qu’il peut entrer et sortir de la gare, ou réaliser une correspondance entre un TGV et un TER dans la même gare s’il doit s'y déplacer, faute d’un graphe piéton disponible.
 
 Un arrêt de transport renseigné peut aussi avoir des coordonnées géographiques erronées qu'il est indispensable de modifier.
 
 Il nous semble que deux solutions peuvent alors être envisagées :
 
-- Contribuer à OpenStreetMap pour ajouter les informations manquantes. Les données .osm.pbf, parmi d'autres formats disponibles, de la Geofabrik sont quotidiennement mises à jour ;
+- Contribuer à OpenStreetMap pour ajouter les informations manquantes. Les données .osm.pbf, parmi d'autres formats disponibles, de la Geofabrik sont quotidiennement mises à jour 
 
 - Modifier la localisation du point d’arrêt créé par le GTFS. Cela peut être intéressant pour déplacer un arrêt avec des coordonnées imprécises ou erronées. Ainsi, le point peut être replacé dans un espace connecté au graphe piéton, comme l’entrée de la gare. Les coordonnées des arrêts sont rangées dans le fichier *stops*.
 
@@ -212,7 +213,7 @@ Il nous semble que deux solutions peuvent alors être envisagées :
 
 OTP étant défini en Java, son fonctionnement nécessite l'entrée de lignes de commandes Java. La bibliothèque `opentripplaner` permet de définir les paramètres de ces fonctions depuis R et de les traduire automatiquement en Java.
 
-La version de la bibliothèque R utilisée pour ce tutoriel est la 0.5.0, publiée en janvier 2023 et téléchargée depuis le CRAN le 27 mars 2023. Son exécution nécessitera l'installation préalable de [Java 8](https://www.java.com/fr/download/) sur la machine. Attention, des conflits avec des versions postérieures ou ultérieures de Java sur votre machine sont à attendre, il est donc recommandé de désinstaller ces versions en amont de l'installation de Java 8 et du lancement d'OTP.
+La version de la bibliothèque R utilisée pour ce tutoriel est la 0.5.2, publiée en janvier 2023 et téléchargée depuis le CRAN le 21 mai 2024. Son exécution nécessitera l'installation préalable de [Java 8](https://www.java.com/fr/download/). Attention, des conflits avec des versions postérieures ou ultérieures de Java sont à attendre, il est donc recommandé de désinstaller ces versions en amont de l'installation de Java 8 et du lancement d'OTP.
 
 <div class="alert alert-danger" role="alert">
 Si la désinstallation d'une version postérieure ou ultérieure à Java 8 représente un problème, il existe des solutions pour faire cohabiter plusieurs versions de Java en fonction de votre système d'exploitation : [Linux Ubuntu](https://www.baeldung.com/linux/java-choose-default-version), [Windows](https://www.happycoders.eu/java/how-to-switch-multiple-java-versions-windows/) et [MacOS X](https://notiz.dev/blog/how-to-manage-multiple-java-versions-on-mac).</div>
@@ -229,7 +230,7 @@ Nous allons donc utiliser OTP en local, en téléchargeant la version 1.5 du log
 
 ### Création du répertoire
 
-OTP est distribué sous la forme d'un unique fichier JAR (*Java ARchive*) exécutable de façon autonome. Dans un premier temps, nous allons créer le répertoire dans lequel l'enregistrer.
+OTP est distribué sous la forme d'un unique fichier .jar (*Java ARchive*) exécutable de façon autonome. Dans un premier temps, nous allons créer le répertoire dans lequel l'enregistrer.
 
 La fonction `file.path()` permet de spécifier le chemin d'accès vers un fichier en concaténant des chaînes de caractères. Par défaut, le séparateur utilisé est "`/`".
 
@@ -237,15 +238,15 @@ La fonction `file.path()` permet de spécifier le chemin d'accès vers un fichie
 path_data <- file.path("data/OTP")
 ```
 
-### Pré-construction du fichier JAR
+### Pré-construction du fichier .jar
 
-La fonction `otp_dl_jar()` de la bibliothèque `opentripplanner` télécharge le fichier JAR (*Java Archive*) d'OTP. Par défaut, le fichier JAR est caché dans un sous-repértoire de la bibliothèque. Si l'on souhaite spécifier la localisation du fichier JAR, il faut en indiquer le chemin d'accès (`path =`) et spécifier que l'on ne souhaite pas utiliser le cache par défaut (`cache = FALSE`).
+La fonction `otp_dl_jar()` de la bibliothèque `opentripplanner` télécharge le fichier JAR (*Java Archive*) d'OTP. Par défaut, le fichier JAR est caché dans un sous-répertoire de la bibliothèque. Si l'on souhaite spécifier la localisation du fichier .jar, il faut en indiquer le chemin d'accès (`path =`) et spécifier que l'on ne souhaite pas utiliser le cache par défaut (`cache = FALSE`).
 
 ```{r, eval = FALSE}
 download_otp <- otp_dl_jar(path = path_data, cache = FALSE)
 ```
 
-Il faudra penser à commenter cette ligne de code une fois le téléchargement réalisé afin de ne pas le ré-éxécuter à chaque relance du script.
+Il faudra penser à commenter cette ligne de code une fois le téléchargement réalisé afin de ne pas le ré-exécuter à chaque relance du script.
 
 Si le téléchargement du fichier via R ne fonctionne pas, vous pouvez télécharger manuellement le fichier depuis le [dépôt maven](https://repo1.maven.org/maven2/org/opentripplanner/otp/1.5.0/otp-1.5.0-shaded.jar).
 
@@ -259,23 +260,23 @@ path_otp <- paste(path_data, "/otp-1.5.0-shaded.jar", sep = "")
 
 En amont de la création du graphe sur lequel les calculs d'itinéraires seront réalisés par OTP, il est nécessaire de regrouper les fichiers d'entrée au sein du répertoire contenant le fichier JAR :
 
--   créer un sous-répertoire nommé `graphs` (/graphs) ;
+-   créer un sous-répertoire nommé `graphs` (/graphs) 
 
--   à l'intérieur du sous-répertoire `graphs`, créer un nouveau sous-répertoire nommé `default` (/graphs/default) ;
+-   à l'intérieur du sous-répertoire `graphs`, créer un nouveau sous-répertoire nommé `default` (/graphs/default) 
 
--   dans le sous-repétoire `default`, déposer le fichier osm.pbf du Languedoc-Roussillon et le fichier contenant les données GTFS au format zippé (gtfs.zip).
+-   dans le sous-répertoire `default`, déposer le fichier .osm.pbf du Languedoc-Roussillon et le fichier contenant les données GTFS au format zippé (gtfs.zip).
 
 ## Création du graphe
 
-Afin de construire les itinéraires, OTP reconstitue via la fonction `otp_build_graph()` un graphe des cheminements possibles à partir des données d'entrée susmentionnées. Ce graphe permettra de gagner un temps substantiel pour démarrer de nouvelles sessions d'OTP, à la manière d'une sauvegarde des réseaux.
+Afin de construire les itinéraires, OTP reconstitue via la fonction `otp_build_graph()` un graphe des cheminements possibles à partir des données d'entrée susmentionnées. Ce graphe permet de gagner un temps substantiel pour démarrer de nouvelles sessions d'OTP, à la manière d'une sauvegarde des réseaux.
 
-Le paramètre `otp` indique le chemin d'accès vers l'archive java d'OTP (fichier OTP .jar).
+Le paramètre `otp` indique le chemin d'accès vers l'archive Java d'OTP (fichier OTP .jar).
 
 Le paramètre `dir` indique le chemin d'accès vers le répertoire contenant les fichiers nécessaires à la génération du graphe.
 
-Le paramètre `memory` prend un nombre entier qui renseigne sur la quantité de mémoire à attribuer à OTP (par défaut 2048 Mo). La quantité de mémoire dépend de la taille de l'espace géographique à l'étude, de la puissance de votre machine et de la version de Java utilisée (idéalement du 64 bits, vous serez limités à quelques Go si vous utilisez le 32 bits).
+Le paramètre `memory` prend un nombre entier qui renseigne la quantité de mémoire à attribuer à OTP (par défaut 2048 Mo). La quantité de mémoire dépend de la taille de l'espace géographique à l'étude, de la puissance de votre machine et de la version de Java utilisée (idéalement du 64 bits, vous serez limités à quelques Go si vous utilisez le 32 bits).
 
-Le territoire métropolitain de Montpellier correspond à un espace géographique de taille intermédiaire, nous allons donc demander à utiliser 10 Go de mémoire (c'est-à-dire 10000 Mo). Cette valeur est à définir en fonction des capacités de votre ordinateur et de l'aire d'étude que vous souhaitez étudier.
+Le territoire métropolitain de Montpellier correspond à un espace géographique de taille intermédiaire, nous allons donc demander à utiliser 10 Go de mémoire (c'est-à-dire 10 000 Mo). Cette valeur est à définir en fonction des capacités de votre ordinateur et de votre aire d'étude.
 
 Notons ici qu'OTP est optimisé pour réaliser des routages à l'échelle d'une ville et que ses performances se dégraderont avec de plus grandes zones.
 
@@ -287,7 +288,8 @@ Une fois le graphe construit, il est recommandé de passer la ligne en commentai
 
 ## Synthèse de l'organisation du dossier OTP
 
-Nous pouvons résumer l'organisation du dossier OTP avec ce schéma :
+Nous pouvons résumer l'organisation du dossier OTP ainsi :
+
 ```{r, echo = FALSE, out.width = "50%",  fig.align = 'center'}
 knitr::include_graphics("figures/schema_otp.png")
 ```
