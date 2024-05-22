@@ -294,7 +294,7 @@ Nous pouvons résumer l'organisation du dossier OTP ainsi :
 knitr::include_graphics("figures/schema_otp.png")
 ```
 
-Un fichier `router-config.json`, facultatif pour démarrer une session OTP, pourra être ajouté dans un second temps pour modifier des paramètres de déplacement (voir partie 4.5). Le fichier `Graph.obj` est lui, par contre, indispensable pour démarrer une cession OTP. Il sera créé dans l'environnement R.
+Un fichier `router-config.json`, facultatif pour démarrer une session OTP, pourra être ajouté dans un second temps pour modifier des paramètres de déplacement (voir partie [4.5](#arr%C3%AAter-linstance-locale-dotp)). Le fichier `Graph.obj` est lui, par contre, indispensable pour démarrer une cession OTP. Il sera créé dans l'environnement R.
 
 Pour reproduire le prochain exemple, le répertoire OTP et les données sont disponibles sur Zenodo :
 
@@ -332,7 +332,7 @@ knitr::include_graphics("figures/VertBoisOTP2.png")
 ```
 
 <div class="alert alert-success" role="alert">
-Nous allons dans un premier temps rechercher les itinéraires possibles en transport en commun entre les arrêts de transport en commun Vert-Bois et Port-Marianne, respectant des distances à pieds maximales de 1000 m et étant disponibles au moment de la requête (**ex : le 30 mars 2023, à 15h08**).</div>
+Nous allons dans un premier temps rechercher les itinéraires possibles en transport en commun entre les arrêts de transport en commun Vert-Bois et Port-Marianne, respectant des distances à pied maximales de 1 000 m et étant disponibles au moment de la requête (**ex : le 30 mars 2023, à 15h08**).</div>
 
 ```{r, echo = FALSE, out.width = "100%",  fig.align = 'center'}
 knitr::include_graphics("figures/Itineraire1.png")
@@ -357,7 +357,7 @@ knitr::include_graphics("figures/Itineraire2.png")
 ```
 
 <div class="alert alert-success" role="alert">
-On peut aisément calculer l'impact du choix d'un itinéraire 100% adapté au vélo sur la durée de ce déplacement.</div>
+On peut aisément calculer l'impact du choix d'un itinéraire 100 % adapté au vélo sur la durée de ce déplacement.</div>
 
 ```{r, echo = FALSE, out.width = "100%",  fig.align = 'center'}
 knitr::include_graphics("figures/Itineraire3.png")
@@ -369,7 +369,7 @@ knitr::include_graphics("figures/Itineraire3.png")
 
 Afin d'automatiser les procédures, il est intéressant d'exécuter OTP depuis R, en lui soumettant des lignes de commande personnalisées.
 
-La fonction `otp_connect()` permet de tester et de créer une connexion à OTP depuis R. Plusieurs paramètres peuvent lui être passés en option, tel que le fuseau horaire (*timezone*) à partir duquel construire les requêtes (par défaut, la valeur est celle de votre machine), la version d'OTP (par défaut, la version renseignée est 1.5), ou encore le port utilisé pour la connexion (par défaut, le numéro de port utilisé est 8080).
+La fonction `otp_connect()` permet de tester et de créer une connexion à OTP depuis R. Plusieurs paramètres peuvent être passés en option, tels que le fuseau horaire (*timezone*) à partir duquel construire les requêtes (par défaut, la valeur est celle de votre machine), la version d'OTP (par défaut, la version renseignée est 1.5), ou encore le port utilisé pour la connexion (par défaut, le numéro de port utilisé est 8080).
 
 ```{r}
 my_otpcon <- otp_connect(timezone = "Europe/Paris")
@@ -377,9 +377,9 @@ my_otpcon <- otp_connect(timezone = "Europe/Paris")
 
 ## Arrêter l'instance locale d'OTP
 
-Le lancement d'OTP a automatiquement démarré Java, qui s'exécute hors de l'environnement R. Il faut donc penser à arrêter OTP et Java lorsque l'on quitte la session R à partir de laquelle une session OTP avait été lancée. On utilise pour cela fonction `otp_stop()`.
+Le lancement d'OTP a automatiquement démarré Java, qui s'exécute hors de l'environnement R. Il faut donc penser à arrêter OTP et Java lorsque l'on quitte la session R à partir de laquelle une session OTP avait été lancée. On utilise pour cela la fonction `otp_stop()`.
 
-Un message s'affiche, afin de valider la clotûre de Java induite par la commande `otp_stop()` : "*This will force Java to close, Press [enter] to continue, [escape] to abort*". Notons ici qu'en pressant sur `[enter]`, toutes les applications utilisant Java seront arrêtées.
+Un message s'affiche, afin de valider la clôture de Java induite par la commande `otp_stop()` : "*This will force Java to close, Press [enter] to continue, [escape] to abort*". Notons ici qu'en pressant sur `[enter]`, toutes les applications utilisant Java seront arrêtées.
 
 ```{r, eval = FALSE}
 otp_stop()
@@ -389,7 +389,7 @@ otp_stop()
 
 ### Créer manuellement les fichiers de configuration
 
-OTP permet de [configurer les options de déplacement à prendre en compte lors du déploiement de l'application](http://docs.opentripplanner.org/en/latest/Configuration) (version personnalisée d'OTP) à l'aide de trois types de fichiers au format *JavaScript Object Notation* (json) :
+OTP permet de [configurer les options de déplacement à prendre en compte lors du déploiement de l'application](http://docs.opentripplanner.org/en/latest/Configuration) (version personnalisée d'OTP) à l'aide de trois types de fichiers au format *JavaScript Object Notation* (.json) :
 
 -   `build-config.json` renseigne les éléments indispensables à la génération du graphe, par exemple en spécifiant les fichiers GTFS sources pour différents systèmes de transports en commun fonctionnant sur le territoire ou en indiquant que l'on souhaite que les transferts entre arrêts d'une même station de transport (par exemple, de métro) soient privilégiés :
 
@@ -405,7 +405,7 @@ knitr::include_graphics("figures/router_config1.png")
 
 -   `otp-config.json` contient des commutateurs simples qui activent ou désactivent les fonctionnalités à l'échelle du système. La plupart des applications ne nécessitent pas la modification de ce fichier.
 
-De nombreux paramètres peuvent ainsi être ajoutés dans le fichier de configuration du serveur OTP (voir une présentation [ici](https://docs.opentripplanner.org/en/v1.5.0/Configuration/)). Des exemples de fichiers de configuration sont disponibles [ici](https://github.com/opentripplanner/OpenTripPlanner/tree/dev-2.x/docs/examples). Notons toutefois qu'OTP fournit des valeurs par défaut qu'il définit comme étant *raisonnables*. Les trois fichiers sont donc optionnels, tout comme les options à l'intérieur de chacun.
+De nombreux paramètres peuvent ainsi être ajoutés dans le fichier de configuration du serveur OTP (voir la [présentation en ligne](https://docs.opentripplanner.org/en/v1.5.0/Configuration/)). Des exemples de fichiers de configuration sont disponibles [en ligne](https://github.com/opentripplanner/OpenTripPlanner/tree/dev-2.x/docs/examples). Notons toutefois qu'OTP fournit des valeurs par défaut qu'il définit comme *raisonnables*. Les trois fichiers sont donc optionnels, tout comme les options à l'intérieur de chacun.
 
 ### Modifier les paramètres via des fonctions R
 
@@ -419,16 +419,16 @@ router_config <- otp_make_config(type = "router")
 
 Le fichier est organisé sous la forme de quatre listes, comprenant chacune un ensemble d'objets :
 
--   `$routingDefaults` : liste la série de paramètres par défaut, par exemple la vitesse de marche (`$routingDefaults$walkSpeed`) ;
+-   `$routingDefaults` : liste la série de paramètres par défaut, par exemple la vitesse de marche (`$routingDefaults$walkSpeed`) 
 
--   `$boardTimes` : liste les paramètres de configuration des temps d'embarquement par mode de transport ;
+-   `$boardTimes` : liste les paramètres de configuration des temps d'embarquement par mode de transport 
 
--   `$alightTimes` : liste les paramètres de configuration des temps de démarrage par mode de transport ;
+-   `$alightTimes` : liste les paramètres de configuration des temps de démarrage par mode de transport 
 
 -   `$timeouts` : liste les délais maximums de calcul des 1er, 2e, 3e, etc. itinéraires.
 
 <div class="alert alert-success" role="alert">
-On peut ainsi facilement remplacer une valeur par défaut, par exemple en modifiant la vitesse de marche (de 1,34 mètres par seconde) pour une allure de marche de type promenade, qui équivaudrait à 3 km/h. On obtient une vitesse en m/s en divisant une vitesse en km/h par 3.6 : 3 km/h $=$ 0,84 m/s.</div>
+On peut ainsi facilement remplacer une valeur par défaut, par exemple en modifiant la vitesse de marche (de 1,34 m/s) pour une allure de marche de type promenade, qui équivaudrait à 3 km/h. On obtient une vitesse en m/s en divisant une vitesse en km/h par 3,6 : 3 km/h $=$ 0,84 m/s.</div>
 
 ```{r}
 router_config$routingDefaults$walkSpeed <- as.numeric(0.84)
@@ -483,18 +483,18 @@ L'argument `otpcon` renseigne l'objet de connexion OTP produit avec la fonction 
 
 L'argument `mode` désigne les modes de transport à considérer pour le calcul de l'itinéraire : `TRANSIT` (déplacement en transport en commun, tous modes confondus), `BUS` (déplacement en bus), `TRAM` (déplacement en tramway), `RAIL` (déplacement en train), `WALK` (déplacement piéton), `BICYCLE` (déplacement à vélo), `CAR` (déplacement en voiture), etc. Par défaut, le déplacement est calculé pour un voyage en voiture.
 
-Il est possible d'indiquer des combinaisons de modes de déplacement (parmi les [options proposées par OTP](https://docs.opentripplanner.org/en/v2.2.0/RoutingModes/)). Par exemple, une combinaison `c("CAR", "TRANSIT")` permet de décrire des déplacements de type *Kiss and ride*, où un usager est déposé en voiture à une station de transport en commun sans avoir lui-même à garer le véhicule automobile. La combinaison `c("CAR_PARK", "TRANSIT")` permet quant à elle de décrire des déplacements pour lesquels l'usager se déplace en voiture jusqu'à un parking relais à proximité d'un arrêt de transport en commun puis emprunte ce réseau.
+Il est possible d'indiquer des combinaisons de modes de déplacement (parmi les [options proposées par OTP](https://docs.opentripplanner.org/en/v2.2.0/RoutingModes/)). Par exemple, une combinaison `c("CAR", "TRANSIT")` permet de décrire des déplacements de type *kiss and ride*, où un usager est déposé en voiture à une station de transport en commun sans avoir lui-même à garer le véhicule automobile. La combinaison `c("CAR_PARK", "TRANSIT")` permet quant à elle de décrire des déplacements pour lesquels l'usager se déplace en voiture jusqu'à un parking relais à proximité d'un arrêt de transport en commun puis emprunte ce réseau.
 
 Le paramètre `date_time` renseigne la date et l'heure de départ au format POSIXct. Par défaut, la date et le jour courants sont utilisés.
 
 <div class="alert alert-danger" role="alert">
-<b>Point de vigilance pour les requêtes concernant les horaires de l'après-midi.</b> En fonction des paramètres de votre logiciel R, il est possible que les horaires de l'après-midi se convertissent automatiquement comme le matin. Par exemple `date_time = as.POSIXct("2023-04-19 14:15:00")` pourrait requêter à 2h15 du matin au lieu de 14h15 l'après-midi. Si c'est le cas, vous devez spécifier à chaque nouvelle session R `Sys.setlocale("LC_TIME", "en_US.UTF-8")` dans la console. La résolution du problème a été découverte [ici](https://github.com/ropensci/opentripplanner/issues/85).</div>
+<b>Point de vigilance pour les requêtes concernant les horaires de l'après-midi.</b> En fonction des paramètres de votre logiciel R, il est possible que les horaires de l'après-midi se convertissent automatiquement comme le matin. Par exemple `date_time = as.POSIXct("2023-04-19 14:15:00")` pourrait requêter à 2h15 le matin au lieu de 14h15 l'après-midi. Si c'est le cas, vous devez spécifier à chaque nouvelle session R `Sys.setlocale("LC_TIME", "en_US.UTF-8")` dans la console (voir la [résolution du problème en ligne](https://github.com/ropensci/opentripplanner/issues/85).</div>
 
 D'autres paramètres optionnels sont proposés, parmi lesquels :
 
--   `maxWalkDistance` qui indique le nombre de mètres maximal à parcourir à pied sur l'ensemble du déplacement ;
+-   `maxWalkDistance` qui indique la distance maximale (en mètres) à parcourir à pied sur l'ensemble du déplacement 
 
--   `arriveBy` qui permet de définir l'heure d'arrivée (`arriveBy = TRUE`) via le paramètre `date_time` plutôt que l'heure de départ (par défaut, `arriveBy = FALSE`) ;
+-   `arriveBy` qui permet de définir l'heure d'arrivée (`arriveBy = TRUE`) via le paramètre `date_time` plutôt que l'heure de départ (par défaut, `arriveBy = FALSE`)
 
 -   `numItineraries` qui permet de restreindre le nombre d'itinéaires en sortie.
 
@@ -516,7 +516,7 @@ library(DT)
 datatable(route)
 ```
 
-Le déplacement proposé est composé de trois étapes (*legs*), chacune étant caractérisée par un mode de transport, recensés dans l'ordre du cheminement. La somme de leurs distances et de leurs durées correspond ainsi à la distance (en mètres) et à la durée (en secondes) du déplacement total :
+Le déplacement proposé est composé de trois étapes (*legs*), chacune étant caractérisée par un mode de transport, recensées dans l'ordre du cheminement. La somme de leurs distances et de leurs durées correspond ainsi à la distance (en mètres) et à la durée (en secondes) du déplacement total :
 
 ```{r, eval = TRUE}
 sum(route$leg_distance)
@@ -528,7 +528,7 @@ sum(route$leg_duration)
 
 L'intérêt d'instruire des requêtes OTP par lignes de commande est certainement de pouvoir générer des demandes multiples, par exemple, en étudiant les temps de déplacement nécessaires pour se déplacer d'une origine à une destination à différents moments de la journée, en définissant une liste de lieux de départ pour un même lieu d'arrivée ou encore pour des plages horaires différenciées.
 
-Le format des paramètres `fromPlace` et `toPlace` peut être varié : couple de paires de longitude/latitude, matrice à deux colonnes décrivant les paires de longitude/latitude ou encore un fichier d'information géographique au format `sf` contenant des géométries ponctuelles décrites dans le système de coordonnées 4326.
+Le format des paramètres `fromPlace` et `toPlace` peut être varié : couple de paires de longitude/latitude, matrice à deux colonnes décrivant les paires de longitude/latitude ou encore objet `sf` contenant des géométries ponctuelles décrites dans le système de coordonnées WGS 84 (EPSG 4326).
 
 ```{r}
 coord_origine <- as.matrix(rbind(c(3.86459, 43.69760), c(4.01288, 43.66112)))
@@ -543,7 +543,7 @@ route_2 <- otp_plan(otpcon = my_otpcon,
 
 ```
 
-La localisation des déplacements peut aisément être obtenue et cartographiée. L'exemple ci-dessous utilise la fonction `annotation_map_tile()` de la bibliothèque `ggspatial` afin d'ajouter un fond à la carte générée via la fonction `geom_sf()` de la bibliothèque `ggplot2`. Nous activerons également la bibliothèque `prettymapr` qui est reliée à `ggspatial` pour afficher cette fonction. La fonction `annotation_map_tile()` est accompagnée du paramètre `data = route_2` afin de centrer la carte sur les données spatiales. Par défaut, le fond de carte affiché est `"osm"` (OpenStreetMap). La liste des fonds de carte disponibles est accessible via la fonction `rosm::osm.types()`.
+La localisation des déplacements peut aisément être obtenue et cartographiée. L'exemple ci-dessous utilise la fonction `annotation_map_tile()` de la bibliothèque `ggspatial` afin d'ajouter un fond à la carte générée via la fonction `geom_sf()` de la bibliothèque `ggplot2`. Nous activerons également la bibliothèque `prettymapr` qui est reliée à `ggspatial` pour afficher cette fonction. La fonction `annotation_map_tile()` est accompagnée du paramètre `data = route_2` afin de centrer la carte sur les données spatiales. Par défaut, le fond de carte affiché est celui d'OpenStreetMap. La liste des fonds de carte disponibles est accessible via la fonction `rosm::osm.types()`.
 
 ```{r, eval = TRUE, results = FALSE, message = FALSE, warning = FALSE}
 library(ggplot2)
@@ -583,7 +583,7 @@ time_matrix <- pivot_wider(data = route_3b, names_from = toPlace, values_from = 
   
 ```
 
-On peut également choisir de ne garder au sein de la matrice que la durée de déplacement minimale pour chaque couple d'origine/destination. L'usage des coordonnées géographiques pour désigner les lieux d'origine et de destination n'est ni usuel, ni pratique. Nous allons donc également les modifier.
+On peut également choisir de ne garder au sein de la matrice que la durée de déplacement minimale pour chaque couple origine/destination. L'usage des coordonnées géographiques pour désigner les lieux d'origine et de destination n'est ni usuel, ni pratique. Nous allons donc également les modifier.
 
 ```{r}
 route_3c <- route_3 %>% 
@@ -595,18 +595,22 @@ route_3c$fromPlace <- c("Ori_1", "Ori_2")
 
 route_3c$toPlace <- "Dest_1"
 
-time_matrix_2 <- pivot_wider(data = route_3c, names_from = toPlace, values_from = duration)
+time_matrix_2 <- pivot_wider(data = route_3c, 
+                             names_from = toPlace, 
+                             values_from = duration)
 ```
 
 Ces matrices peuvent par exemple être retranscrites graphiquement sous la forme de cercles proportionnels au temps de déplacement entre les lieux.
 
 ```{r}
-# passage de la matrice au format long pour faciliter sa mise en page graphique via la fonction melt de la bibliothèque reshape2
+# passage de la matrice au format long pour faciliter sa mise en page 
+# graphique via la fonction melt de la bibliothèque reshape2
 library(reshape2)
 
 tabCont_time_matrix_2 <- melt(time_matrix_2) 
 
-# construction d'un graphique en cercles proportionnels avec la bibliothèque ggplot2
+# construction d'un graphique en cercles proportionnels 
+# avec la bibliothèque ggplot2
 library(ggplot2)
 
 ggplot(tabCont_time_matrix_2,
@@ -628,11 +632,11 @@ ggplot(tabCont_time_matrix_2,
 
 Le code ci-dessous présente un exemple de cartographie interactive réalisée avec la bibliothèque `leaflet` pour R.
 
-Nous représenterons le déplacement calculé dans l'objet `route` de la partie 5.1. Pour centrer la carte, nous allons dans un premier temps utiliser les données géospatiales décrivant les contours de la métropole de Montpellier. Leaflet nécessitant une projection en Pseudo-Mercator, nous utilisons la fonction `st_transform()` de la librairie `sf` afin de transformer le système de projection de la couche.
+Nous représenterons le déplacement calculé dans l'objet `route` de la partie [5.1](#requ%C3%AAte-unique). Pour centrer la carte, nous allons dans un premier temps utiliser les données géospatiales décrivant les contours de la métropole de Montpellier. Le package `leaflet` fonctionnant avec des données non projetées, nous utilisons la fonction `st_transform()` de la librairie `sf` afin de transformer le système de projection de la couche.
 
 Les fonctions `st_centroid()` et `st_coordinates()` de la librairie `sf` permettent respectivement de définir le centroïde du polygone et d'en récupérer les coordonnées au sein d'une matrice. Les longitudes sont données dans la première colonne et les latitudes dans la seconde.
 
-Notons que le GeoJSON `epci_3m` a été téléchargé et chargé dans la partie 2.2.1.
+Notons que le GeoJSON `epci_3m` a été téléchargé et chargé dans la partie [2.2.1](#les-donn%C3%A9es-openstreetmap).
 
 ```{r}
 epci_3m_4326 <- st_transform(epci_3m, 4326)
@@ -646,9 +650,9 @@ lon_centro_3m <- median(st_coordinates(centro_3m)[,1])
 
 Nous faisons ensuite appel aux fonctionnalités de la bibliothèque `leaflet` afin de construire la carte interactive de l'objet `route` que nous venons de créer :
 
--   `setView()` permet de définir la vue de départ, en indiquant son centre géographique par un couple de coordonnées et un niveau de zoom allant de 0 (monde) à 18 (rue) ;
+-   `setView()` permet de définir la vue de départ, en indiquant son centre géographique par un couple de coordonnées et un niveau de zoom allant de 0 (monde) à 18 (rue) 
 
--   `addPolylines()` permet d'ajouter des objets géographiques de type polylignes. Par défaut, les géométries sont celles des données renseignées dans la fonction `leaflet` de génération de la carte interactive (ici l'objet route au format `sf`). On peut choisir d'ajouter des fenêtres contextuelles (*pop-up*), par exemple sous la forme d'une étiquette apparaissant au passage du curseur sur l'objet. Parmi les nombreux paramètres de mise en forme disponibles, les options `color` et `weight` permettent respectivement de contrôler la couleur et la taille (en pixel) des traits ;
+-   `addPolylines()` permet d'ajouter des objets géographiques de type polylignes. Par défaut, les géométries sont celles des données renseignées dans la fonction `leaflet` de génération de la carte interactive (ici l'objet route au format `sf`). On peut choisir d'ajouter des fenêtres contextuelles (*pop-up*), par exemple sous la forme d'une étiquette apparaissant au passage du curseur sur l'objet. Parmi les nombreux paramètres de mise en forme disponibles, `color` et `weight` permettent respectivement de contrôler la couleur et l'épaisseur (en pixels) des traits 
 
 -   `addProviderTiles()` permet d'ajouter un fond de carte interactif d'un des principaux fournisseurs (OpenStreeMap, CartoDB, Stamen, Thunderforest, etc.). La liste complète est accessible via la commande `names(providers)`.
 
