@@ -1134,7 +1134,6 @@ mf_map(epci_3m,
        leg_pos = "left",
        leg_title = "Densité de population\n(habitants par km²)",
        leg_frame = TRUE, 
-       add = TRUE,  
        expandBB = c(0, 0, 0.1, 0))
        
 mf_map(tableau_resultat,
