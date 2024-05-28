@@ -18,10 +18,10 @@ bibliography: biblio.bib
 nocite: |
   @*
 link-citations: true
-# github: "author/repository"
+github: "rzine-reviews/OTP_RZINE"
 # gitlab: "gitlab.huma-num.fr/author/repository"
-# doi: "xx.xxx/xxxx.xxxxxxx"
-# licence: "by-sa"
+doi: "xx.xxx/xxxx.xxxxxxx"
+licence: "by-sa"
 
 # Only Creative Commons Licence 
 # 5 possible choices : "by-nd", "by", "by-nc-sa", "by-nc","by-sa"
@@ -700,7 +700,10 @@ leafMap <- leaflet(data = route) %>%
   setView(lat = 43.608887,
           lng = 3.880381,
           zoom = 18) %>%
-  addPolylines(popup = ~paste("<strong>Durée de l'étape :</strong> ", round(leg_duration/60)," minute(s)<br>","<strong>Mode :</strong>", leg_mode),
+  addPolylines(popup = ~paste("<strong>Durée de l'étape :</strong> ",
+                              round(leg_duration/60),
+                              " minute(s)<br>","<strong>Mode :</strong>", 
+                              leg_mode),
                color = ~mycol(leg_mode),
                weight = 4) %>%
   addProviderTiles(providers$CartoDB.Positron)
@@ -716,17 +719,17 @@ leafMap
 
 Nous proposons dans ce tutoriel deux types d'analyse d'accessibilité multimodale sous contrainte temporelle parmi l'ensemble des possibilités envisageables :
 
-- la cartographie d'isochrones de temps d'accès à un lieu et à un horaire donné ;
+- la cartographie d'isochrones de temps d'accès à un lieu et à un horaire donné
 
 - la cartographie du nombre de déplacements réalisables et des temps moyens d'accès à un lieu pour une plage horaire donnée.
 
 ## Isochrones d'accessibilité
 
-Les cartes d'isochrones délimitent des aires d'accessibilité équivalentes en temps de déplacement à partir d'un certain point de départ. Elles figurent généralement plusieurs zones d'accessibilité, afin de représenter les différentiels croissants de coût du déplacement à mesure que l'on s'éloigne du lieu d'intérêt.
+Les cartes d'isochrones délimitent des aires d'accessibilité équivalentes en temps de déplacement à partir d'un point de départ. Elles figurent généralement plusieurs zones d'accessibilité, afin de représenter les différentiels croissants de coût du déplacement à mesure que l'on s'éloigne du lieu d'intérêt.
 
 ### Localiser les différentiels d'accès à un lieu selon un mode de déplacement
 
-La fonction `otp_isochrone()` génère des cartes d'isochrone en fonction d'un mode de transport (ou de la combinaison de plusieurs modes). Les paramètres de la fonction sont identiques à ceux utilisés pour générer des itinéraires, à l'exception de l'argument `cutoffSec` qui permet de définir les bornes maximales de chaque intervalle de temps, en secondes (les valeurs doivent donc être multipliées par 60 pour représenter des temps en minutes, par 3600 pour représenter des temps en heures, etc).
+La fonction `otp_isochrone()` génère des cartes d'isochrones en fonction d'un mode de transport (ou de la combinaison de plusieurs modes). Les paramètres de la fonction sont identiques à ceux utilisés pour générer des itinéraires, à l'exception de l'argument `cutoffSec` qui permet de définir les bornes maximales de chaque intervalle de temps, en secondes (les valeurs doivent donc être multipliées par 60 pour représenter des temps en minutes, par 3 600 pour représenter des temps en heures, etc).
 
 ```{r}
 iso_gareStRoch <- otp_isochrone(otpcon = my_otpcon,
@@ -754,16 +757,17 @@ mycol_2 <- colorFactor(
 
 Nous utiliserons la fonction `addPolygons()` afin de figurer les isochrones sur le fond de carte, en introduisant de nouvelles options de mise en forme :
 
--   `stroke = FALSE` : permet de retirer les contours des polygones ;
+-   `stroke = FALSE` : permet de retirer les contours des polygones 
 
--   `smoothFactor` : définit le niveau de simplication des géométries en fonction du zoom ;
+-   `smoothFactor` : définit le niveau de simplication des géométries en fonction du zoom 
 
 -   `fillOpacity` : contrôle le niveau d'opacité (resp. de transparence) du remplissage.
 
 Avant de créer la carte, nous téléchargeons les lignes de tramway de la métropole de Montpellier (format shapefile) afin de faciliter l'interprétation des résultats :
 
 <p class="center">
-[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span><br/>Télécharger les données](data/Tramway.zip)</p>
+[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span><br/>Télécharger les données](data/Tramway.zip)
+</p>
 
 ```{r,results=FALSE}
 tramway <- st_read("data/MMM_MMM_LigneTram.shp")
@@ -783,7 +787,8 @@ leafMap <- leafMap %>%
   addPolylines(data = tramway,
                opacity = 1,
                weight = 4,
-               color = ~factor(num_exploi, levels = c(1, 2, 3, 4), labels = c("blue", "#c51b8a", "green", "brown")))
+               color = ~factor(num_exploi, levels = c(1, 2, 3, 4), 
+                               labels = c("blue", "#c51b8a", "green", "brown")))
 
 leafMap
 ```
@@ -815,8 +820,9 @@ leafMap <- leafMap %>%
   addPolylines(data = tramway,
                opacity = 1,
                weight = 4,
-               color = ~factor(num_exploi, levels = c(1, 2, 3, 4), labels = c("blue", "#c51b8a", "darkgreen", "brown"))
-               ) %>%
+               color = ~factor(num_exploi, levels = c(1, 2, 3, 4), 
+                               labels = c("blue", "#c51b8a", 
+                                          "darkgreen", "brown"))) %>%
   addLegend("bottomleft", pal = mycol_3,
             values = tramway$num_exploi,
             title = "Lignes de tramway",
@@ -827,10 +833,10 @@ leafMap
 
 ### Comparer cartographiquement les différentiels d'accès à un lieu entre deux modes
 
-Nous pouvons aussi choisir de superposer les isochrones de temps de déplacement à vélo sur la carte, et proposer à l'utilisateur de basculer d'une représentation à une autre grâce au paramètre `group` proposé par Leaflet.
+Nous pouvons aussi choisir de superposer les isochrones de temps de déplacement à vélo sur la carte, et proposer à l'utilisateur de basculer d'une représentation à une autre grâce au paramètre `group` proposé par `leaflet`.
 
 <div class="alert alert-success" role="alert">
-Nous générons les isochrones d'accessibilité à la gare Saint-Roch à vélo, en utilisant les mêmes intervalles de temps (en minutes) que ceux mobilisés pour les déplacements combinant marche et transport en commun et le même moment.</div>
+Nous générons les isochrones d'accessibilité à la gare Saint-Roch à vélo, en utilisant les mêmes intervalles de temps (en minutes) que ceux mobilisés pour les déplacements combinant marche et transport en commun, et le même moment.</div>
 
 ```{r}
 iso_gareStRoch_velo <- otp_isochrone(otpcon = my_otpcon,
@@ -878,7 +884,8 @@ leafMap <- leafMap %>%
                opacity = 1,
                weight = 4,
                group = "TRAMWAY",
-               color = ~factor(num_exploi, levels = c(1, 2, 3, 4), labels = c("blue", "#c51b8a", "green", "brown")))
+               color = ~factor(num_exploi, levels = c(1, 2, 3, 4), 
+                               labels = c("blue", "#c51b8a", "green", "brown")))
 
 leafMap
 ``` 
@@ -924,8 +931,9 @@ leafMap <- leafMap %>%
                opacity = 1,
                weight = 4,
                group = "TRAMWAY",
-               color = ~factor(num_exploi, levels = c(1, 2, 3, 4), labels = c("blue", "#c51b8a", "darkgreen", "brown"))
-               ) %>%
+               color = ~factor(num_exploi, levels = c(1, 2, 3, 4), 
+                               labels = c("blue", "#c51b8a", 
+                                          "darkgreen", "brown"))) %>%
   addLegend("bottomleft", pal = mycol_3,
             values = tramway$num_exploi,
             title = "Lignes de tramway",
@@ -937,13 +945,13 @@ leafMap
 
 ## Nombre de déplacements réalisables dans un intervalle de temps
 
-L'analyse proposée ici vise à qualifier l'offre de transport en commun entre une ou plusieurs origine(s) en direction d'une destination à partir de la mesure du nombre de déplacements réalisables et de leurs durées. Cette analyse d'accessibilité sous contrainte horaire s'inscrit dans le cadre théorique et méthodologique de la *Time-Geography* (par exemple : @Chapelon2016 ; @Conesa2012 ; @LHostis2004 ; ...).
+L'analyse proposée ici vise à qualifier l'offre de transport en commun entre une ou plusieurs origine(s) en direction d'une destination à partir de la mesure du nombre de déplacements réalisables et de leurs durée. Cette analyse d'accessibilité sous contrainte horaire s'inscrit dans le cadre théorique et méthodologique de la *time geography* [par exemple : @Chapelon2016 ; @Conesa2012 ; @LHostis2004].
 
-À titre d'exemple, nous développons un programme permettant de compter tous les déplacements possibles via le réseau de la TAM à partir des 30 mairies de la métropole (hors Montpellier) pour une arrivée entre 7h et 9h à la Gare Saint-Roch. L'objectif est d'évaluer la qualité de l'offre de transport théorique à l'heure de pointe du matin à partir des centres-villes des communes métropolitaines (les retards potentiels liés aux accidents de circulation, aux travaux, etc. ne sont pas pris en compte). 
+À titre d'exemple, nous développons un programme permettant de compter tous les déplacements possibles via le réseau de la TAM à partir des 30 mairies de la métropole (hors Montpellier) pour une arrivée entre 7h et 9h à la gare Saint-Roch. L'objectif est d'évaluer la qualité de l'offre de transport théorique à l'heure de pointe du matin à partir des centres-villes des communes métropolitaines (les retards potentiels liés aux accidents de circulation, aux travaux, etc. ne sont pas pris en compte). 
 
 ### Préparation des données
 
-La localisation des 30 mairies de la métropole de Montpellier (hors Montpellier) est recueillie à partir de la base de données des équipements de l'[INSEE](https://www.insee.fr/fr/statistiques/3568638?sommaire=3568656). Les mairies correspondent aux lignes portant le code **A129** pour la variable **TYPEQU**. Dans ce tutoriel, nous utilisons une extraction de la base de données réalisée *a priori*, du fait de la lourdeur du fichier d'origine.
+La localisation des 30 mairies de la métropole de Montpellier (hors Montpellier) est recueillie à partir de la base de données des équipements de l'[INSEE](https://www.insee.fr/fr/statistiques/3568638?sommaire=3568656). Les mairies correspondent aux lignes portant le code **A129** pour la variable **TYPEQU**. Dans ce tutoriel, nous utilisons une extraction de la base de données réalisée a priori, du fait de la lourdeur du fichier d'origine.
 
 Les données utilisées dans cet exemple sont disponibles ici :
 
@@ -970,7 +978,7 @@ Les coordonnées géographiques étant en Lambert93 (code EPSG 2154), nous les t
 mairies <- st_transform(mairies, 4326)
 ```
 
-Nous choisissons la plage horaire pour laquelle OTP réalisera toutes ses requêtes. L'horaire de départ est 6h et l'horaire de fin 9h afin de nous assurer de récolter les déplacements permettant d'arriver entre 7h et 9h à la gare St-Roch.
+Nous choisissons la plage horaire pour laquelle OTP réalisera toutes ses requêtes. L'horaire de départ est 6h et l'horaire de fin 9h afin de nous assurer de récolter les déplacements permettant d'arriver entre 7h et 9h à la gare Saint-Roch.
 
 ```{r}
 temps_debut <- as.POSIXct("2023-04-19 06:00:00")
@@ -988,7 +996,7 @@ coord_dest <- c(3.88040, 43.60508)
 
 ### Exécution de la boucle pour récolter l'offre de transport
 
-Nous construisons ensuite une boucle qui réalise une itération par minute supplémentaire de l'horaire de début jusqu'à l'horaire limite au cours de laquelle nous effectuons des requêtes d'itinéraires en transport en commun depuis les lieux d'origine vers le lieu de destination dont nous enregistrons successivement les caractéristiques dans un tableau de données que nous nommons `routes`.  
+Nous construisons une boucle qui réalise une itération par minute supplémentaire de l'horaire de début jusqu'à l'horaire limite au cours de laquelle nous effectuons des requêtes d'itinéraires en transport en commun depuis les lieux d'origine vers le lieu de destination dont nous enregistrons successivement les caractéristiques dans un tableau de données que nous nommons `routes`.  
 
 La durée de cette opération est fonction du nombre de traitements et d'itérations qu'OTP doit réaliser. La fonction `tryCatch()` permet à la boucle de fonctionner malgré une éventuelle erreur de connexion au serveur OTP, due à des instabilités ponctuelles.
 
@@ -1014,7 +1022,7 @@ while(temps_debut < temps_limite){
 
 ### Mise en forme des données
 
-Puisque nous voulons compter le nombre de déplacements possibles avec une arrivée à destination entre 7h et 9h, la période de pointe, nous supprimerons les déplacements hors-champ (arrivée avant 7h et après 9h).
+Puisque nous voulons compter le nombre de déplacements possibles avec une arrivée à destination entre 7h et 9h, la période de pointe, nous supprimons les déplacements hors-champ (arrivée avant 7h et après 9h).
 
 ```{r}
 routes <- routes[routes$endTime >= "2023-04-19 07:00:00" & routes$endTime < "2023-04-19 09:00:00", ]
@@ -1044,12 +1052,12 @@ ggplot() + geom_histogram(aes(x = tableau_resultat$duree_moy),
                           color = "black", 
                           fill = "lightblue") +
     labs(title = "Distribution des durées moyennes des déplacements obtenus pour les 30 communes",
-         x = "Durée moyenne des déplacements",
+         x = "Durée moyenne des déplacements (min)",
          y = "Nombre de mairies") +
     theme_classic() # thème de fond (ici "classic")
 ``` 
 
-Nous notons que la répartition des temps de déplacement moyens en transport en commun depuis les mairies des communes de la métropole de Montpellier Méditerrannée vers la gare St-Roch aux heures de pointe du matin est très irrégulière et présente des écarts importants (les valeurs étant comprises entre `r round(min(tableau_resultat$duree_moy),0)` et  `r round(max(tableau_resultat$duree_moy),0)` minutes). 
+Nous notons que la répartition des temps de déplacement moyens en transport en commun depuis les mairies des communes de la métropole de Montpellier Méditerrannée vers la gare Saint-Roch aux heures de pointe du matin est très irrégulière et présente des écarts importants (les valeurs étant comprises entre `r round(min(tableau_resultat$duree_moy),0)` et  `r round(max(tableau_resultat$duree_moy),0)` minutes). 
 
 ### Cartographie
 
@@ -1068,24 +1076,28 @@ tableau_resultat <- st_as_sf(tableau_resultat, coords = c("y", "x"),
 
 Nous choisissons de représenter ces différentiels d'accessibilité sous forme d'une cartographie statique. Le nombre de déplacements réalisables par commune est figuré par le biais de cercles proportionnels. Les durées moyennes de ces déplacements sont discrétisées par classes d'intervalles égaux.
 
-De nombreuses bibliothèques existent pour réaliser de la cartographie avec R, dont la bibliothèque phare de création de graphiques sous R : `ggplot2`.
+De nombreuses bibliothèques existent pour réaliser de la cartographie avec R, dont la bibliothèque phare de création de graphiques avec R `ggplot2`.
 
-`mapsf` a toutefois été créée en 2021 dans le but spécifique de faciliter la production de cartes thématiques conformes au règle de la sémiologie graphique sous R, à partir de données au format `sf`. Les principales fonctionnalités de la bibliothèque sont recensées dans un document graphique téléchargeable [ici](https://raw.githubusercontent.com/riatelab/mapsf/master/vignettes/web_only/img/mapsf_cheatsheet.pdf).
+`mapsf` a toutefois été créée en 2021 dans le but spécifique de faciliter la production de cartes thématiques conformes au règle de la sémiologie graphique avec R, à partir d'objets `sf`. Les principales fonctionnalités de la bibliothèque sont recensées dans un [document graphique en ligne](https://raw.githubusercontent.com/riatelab/mapsf/master/vignettes/web_only/img/mapsf_cheatsheet.pdf).
 
 La fonction `mf_map()` de la bibliothèque `mapsf` est la fonction centrale du package qui permet de construire une carte au format varié à partir des paramètres :
 
-- `x` l’objet au format sf ;
+- `x` l’objet au format `sf`
 
-- `var` la variable à cartographier ;
+- `var` la variable à cartographier
 
-- `type` le type de carte que l’on souhaite créer (`prop` pour des symboles proportionnels, `choro` pour une carte choroplèthe, `typo` pour une palette de couleurs variées, `symb` pour des symboles ponctuels différenciés,...). Puisque nous souhaitons représenter conjointement une variable quantitative de stock et des intervalles de temps de déplacement, nous choisissons le type `prop_choro` qui permet de varier la taille des figurés et leur intensité chromatique de façon synchrone.
+- `type` le type de carte que l’on souhaite créer (`prop` pour des symboles proportionnels, `choro` pour une carte choroplèthe, `typo` pour une palette de couleurs variées, `symb` pour des symboles ponctuels différenciés...). Puisque nous souhaitons représenter conjointement une variable quantitative de stock et des intervalles de temps de déplacement, nous choisissons le type `prop_choro` qui permet de varier la taille des figurés et leur intensité chromatique de façon synchrone.
 
-Nous ajontons le nombre d'habitants pour chaque commune (INSEE RP2020) et calculons la densité de population. La surface de chaque polygone est calculée avec `st_area` avec l'unité m2 par défaut. Nous utilisons la bibliothèque `units` pour convertir automatiquement les surfaces de chaque commune de m$^2$ à km$^2$ avec `set_units`. L'expression `attributes() = NULL` permet ensuite de supprimer les unités de la colonne car elles peuvent causer des problèmes lors des rendus graphiques (comme `ggplot2`).
+Nous ajontons le nombre d'habitants pour chaque commune (INSEE RP2020) et calculons la densité de population. La surface de chaque polygone est calculée avec `st_area` avec l'unité m$^2$ par défaut. Nous utilisons la bibliothèque `units` pour convertir automatiquement les surfaces de chaque commune de m$^2$ à km$^2$ avec `set_units`. L'expression `attributes() = NULL` permet ensuite de supprimer les unités de la colonne car elles peuvent causer des problèmes lors des rendus graphiques (comme `ggplot2`).
 
 ```{r}
 library(units)
 
-epci_3m$popu <- c("9305", "6794", "2176", "23469", "4014", "1640", "5613", "2839", "6423", "9438", "6490", "3293", "7194", "8218", "12104", "2818", "3517", "7600", "2183", "1039", "299096", "6007", "5628", "11843", "10463", "8885", "17674", "6771", "2041", "1856", "3330")
+epci_3m$popu <- c("9305", "6794", "2176", "23469", "4014", "1640",
+                  "5613", "2839", "6423", "9438", "6490", "3293",
+                  "7194", "8218", "12104", "2818", "3517", "7600", 
+                  "2183", "1039", "299096", "6007", "5628", "11843",
+                  "10463", "8885", "17674", "6771", "2041", "1856", "3330")
 
 epci_3m$popu <- as.numeric(epci_3m$popu)
 
@@ -1111,10 +1123,9 @@ gare_st_Roch$nom <- "Gare Saint-Roch"
 
 library(mapsf)
 
-mf_init(x = tableau_resultat, theme = "iceberg", expandBB = c(0.3, 0.3, 0.3, 0.3))
+mf_theme("iceberg")
 
 mf_map(epci_3m,
-       add = TRUE,
        type = "choro",
        var = "densite",
        breaks = "geom",
@@ -1122,8 +1133,10 @@ mf_map(epci_3m,
        pal = "Reds",
        leg_pos = "left",
        leg_title = "Densité de population\n(habitants par km²)",
-       leg_frame = TRUE)
-
+       leg_frame = TRUE, 
+       add = TRUE,  
+       expandBB = c(0, 0, 0.1, 0))
+       
 mf_map(tableau_resultat,
        type = "prop_choro",
        var = c("nb_deplacements", "duree_moy"),
@@ -1162,7 +1175,7 @@ mf_layout(
   frame = TRUE)
 ```
 
-Il est possible d'évaluer la performance de l'offre de transport par rapport à la distance euclidienne qui sépare les mairies à la gare Saint-Roch. Nous pouvons calculer cette distance avec l'expression `st_distance` de la bibliothèque `sf`. Nous ajoutons ensuite les `distances` dans notre `tableau_resultat`.
+Il est possible d'évaluer la performance de l'offre de transport par rapport à la distance euclidienne qui sépare les mairies de la gare Saint-Roch. Nous pouvons calculer cette distance avec l'expression `st_distance` de la bibliothèque `sf`. Nous ajoutons ensuite les `distances` dans notre `tableau_resultat`.
 
 ```{r}
 distances <- st_distance(tableau_resultat$geometry, gare_st_Roch$geometry)
@@ -1170,7 +1183,7 @@ distances <- st_distance(tableau_resultat$geometry, gare_st_Roch$geometry)
 tableau_resultat$distance_euclidienne <- distances
 ```
 
-Afin de faciliter la lecture des résultats, il nous faudra les codes INSEE de chacune des mairies. Les codes INSEE sont enregistrés dans le tableau `mairies` avec les coordonnées géographiques identiques à `tableau_resultat`. Nous réaliserons une jointure spatiale pour joindre toutes les colonnes des deux tableurs. Nous donnerons une valeur de `0.1` à `st_precision` afin de faire correspondre les coordonnées géographiques des deux tableurs en raison de très légères différences (aussi petites soient-elles) dûes à des manipulations antérieures. La jointure spatiale est réalisée par l'expression `st_join`.
+Afin de faciliter la lecture des résultats, il nous faut les codes INSEE de chacune des mairies. Les codes INSEE sont enregistrés dans le tableau `mairies` avec les même coordonnées géographiques que `tableau_resultat`. Nous devons réaliser une jointure spatiale pour joindre toutes les colonnes des deux tableaux avec la fonction `st_join`. Nous devons au préalable attribuer la valeur de `0.1` à `st_precision` afin de faire correspondre les coordonnées géographiques des deux tableaux en raison de très légères différences (aussi petites soient-elles) dues à des manipulations antérieures. 
 
 ```{r}
 mairies <- st_transform(mairies, 2154)
@@ -1182,7 +1195,7 @@ st_precision(tableau_resultat) <- 0.1
 jointure_spatiale <- st_join(tableau_resultat, mairies)
 ```
 
-La conversion de mètre à kilomètre est réalisée par `set_units` puis nous supprimerons l'unité avec `attributes() = NULL` car elle empêche la création du nuage de points dans `ggplot2`.
+La conversion de mètre à kilomètre est réalisée par `set_units` puis nous supprimons l'unité avec `attributes() = NULL` car elle empêche la création du nuage de points dans `ggplot2`.
 
 ```{r}
 jointure_spatiale$distance_euclidienne <- set_units(jointure_spatiale$distance_euclidienne, km)
@@ -1207,7 +1220,7 @@ dist
 
 Le graphique permet de constater qu'il y a globalement bien une relation entre la distance et la durée moyenne des déplacements (plus c'est loin, plus il faudra de temps). Toutefois, des différences importantes de temps de déplacement, à distance égale, existent : la mairie du Crès (34090) est presque aussi éloignée que celle de Pérols (34198) alors qu'un écart de 25 minutes de déplacement les différencie (Pérols possède une desserte en tramway contrairement au Crès). 
 
-N'oubliez pas d'arrêter le serveur OTP une fois vos analyses terminées, comme il en est le cas pour ce tutoriel !
+N'oubliez pas d'arrêter le serveur OTP une fois vos analyses terminées!
 
 ```{r, results = "hide"}
 otp_stop()
