@@ -8,7 +8,7 @@ Marion Le Texier (LAGAM, Université Paul Valéry Montpellier 3)
 Matthieu Viry (UAR RIATE, CNRS)  
 Armand Pons (UMR LIVE, Université de Strasbourg)  
 
-**Résumé : **    
+**Résumé :**      
 Cet article présente une méthodologie d’analyse de l’accessibilité multimodale d’un territoire à partir des données GTFS et du logiciel OpenTripPlanner. Nous détaillerons la manière dont ce nouvel outil ouvre de nouvelles perspectives d’analyse de l’accessibilité en lien avec les nouvelles données de mobilité.  
 Le répertoire OTP, contenant le logiciel Java et les données nécessaires aux calculs d'accessibilité, est disponible [en ligne](https://zenodo.org/records/10793738).
 
