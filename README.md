@@ -1,4 +1,4 @@
-# Analyse d’accessibilité multimodale [<img src="https://rzine.fr/img/Rzine_logo.png"  align="right" width="120"/>](https://rzine.fr/)
+# Analyse d’accessibilité multimodale  [<img src="https://rzine.fr/assets/img/rzine.png"  align="right" width="120"/>](http://rzine.fr/)
 ### Avec R et OpenTripPlanner
 **Auteur·es :**   
 Jean-Clément Ullès (LAGAM, Université Paul Valéry Montpellier 3)   
